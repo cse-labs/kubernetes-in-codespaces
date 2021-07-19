@@ -1,6 +1,6 @@
 # Kind Dev Cluster on Codespaces (Spark)
 
-> Setup a Kubernetes Developer Cluster using `kind` or `k3d` running in [GitHub Codespaces](https://github.com/features/codespaces)
+> Setup a Kubernetes Developer Cluster using `kind` running in [GitHub Codespaces](https://github.com/features/codespaces)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -30,17 +30,8 @@
 
 ## Build and Deploy Cluster
 
-By default the solution will create a `kind` cluster. If you want to use [k3d](https://k3d.io/), run the make commands from the `k3d` directory
-
-> For the Spark live event, please use `kind` - you can run through again with `k3d` after the live event
-
   ```bash
 
-  # (optional) use the k3d makefile
-  # please use kind for the Spark live event
-  cd k3d
-
-  # build the cluster
   make all
 
   ```
