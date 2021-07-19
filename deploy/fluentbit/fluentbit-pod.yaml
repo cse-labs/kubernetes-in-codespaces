@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fluentb
+  namespace: default
+  labels:
+    app: fluentb
+spec:
+    priorityClassName: system-node-critical
+    serviceAccountName: fluentbit
+    terminationGracePeriodSeconds: 10
+
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+
+    containers:
+    - name: fluent-bit
+      image: fluent/fluent-bit:1.5
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 2020
+
+      env:
+      - name: WorkspaceId
+        valueFrom:
+          secretKeyRef:
+            name: log-secrets
+            key: WorkspaceId
+
+      - name: SharedKey
+        valueFrom:
+          secretKeyRef:
+            name: log-secrets
+            key: SharedKey
+
+      - name: ngsaLog
+        valueFrom:
+          configMapKeyRef:
+            name: log-config
+            key: ngsaLog
+
+      - name: webvLog
+        valueFrom:
+          configMapKeyRef:
+            name: log-config
+            key: webvLog
+
+      - name: Zone
+        valueFrom:
+          configMapKeyRef:
+            name: log-config
+            key: Zone
+
+      - name: Region
+        valueFrom:
+          configMapKeyRef:
+            name: log-config
+            key: Region
+
+      volumeMounts:
+      - name: varlog
+        mountPath: /var/log
+
+      - name: varlibdockercontainers
+        mountPath: /var/lib/docker/containers
+        readOnly: true
+
+      - name: fluent-bit-config
+        mountPath: /fluent-bit/etc/
+
+    volumes:
+    - name: varlog
+      hostPath:
+        path: /var/log
+
+    - name: varlibdockercontainers
+      hostPath:
+        path: /var/lib/docker/containers
+
+    - name: fluent-bit-config
+      configMap:
+        name: fluent-bit-config

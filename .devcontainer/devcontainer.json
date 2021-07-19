@@ -1,0 +1,27 @@
+{
+	"name": "akdc-kind",
+	"remoteUser": "vscode",
+	"image": "ghcr.io/retaildevcrews/kind:beta",
+	"runArgs": [
+		"--init",
+		"--privileged"
+	],
+	"overrideCommand": false,
+	"settings": { },
+	"forwardPorts": [
+		30000,
+		30080,
+		30088,
+		32000
+	],
+	// Install extensions
+	"extensions": [
+		"davidanson.vscode-markdownlint",
+		"gruntfuggly.todo-tree",
+		"ms-azuretools.vscode-docker",
+		"mutantdino.resourcemonitor",
+		"humao.rest-client"
+	],
+	// Run Bash script in .devcontainer directory
+	"postCreateCommand": "/bin/bash ./.devcontainer/post-install.sh"
+}

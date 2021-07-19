@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "akdc-kind",
+			"path": "."
+		},
+		{
+			"name": "webv",
+			"path": "../webvalidate"
+		},
+		{
+			"name": "ngsa-app",
+			"path": "../ngsa-app"
+		}
+	],
+	"settings": {}
+}

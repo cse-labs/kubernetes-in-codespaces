@@ -1,0 +1,32 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30088
+    hostPort: 30088
+    listenAddress: "127.0.0.1"
+    protocol: TCP
+  - containerPort: 30081
+    hostPort: 30081
+    listenAddress: "127.0.0.1"
+    protocol: TCP
+  - containerPort: 30080
+    hostPort: 30080
+    listenAddress: "127.0.0.1"
+    protocol: TCP
+  - containerPort: 32000
+    hostPort: 32000
+    listenAddress: "127.0.0.1"
+    protocol: TCP
+  - containerPort: 30000
+    hostPort: 30000
+    listenAddress: "127.0.0.1"
+    protocol: TCP
+  extraMounts:
+  - hostPath: /prometheus
+    containerPath: /prometheus
+    propagation: HostToContainer
+  - hostPath: /grafana
+    containerPath: /grafana
+    propagation: HostToContainer

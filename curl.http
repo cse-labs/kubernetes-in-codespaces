@@ -1,0 +1,83 @@
+# Swagger
+GET http://localhost:30080 HTTP/1.1
+
+###
+
+# NGSA version
+GET http://localhost:30080/version HTTP/1.1
+
+###
+
+# NGSA metrics
+GET http://localhost:30080/metrics HTTP/1.1
+
+###
+
+# NGSA healthz
+GET http://localhost:30080/healthz HTTP/1.1
+
+###
+
+# NGSA healthz ietf
+GET http://localhost:30080/healthz/ietf HTTP/1.1
+
+###
+
+# IMDB Movie API - retrieve list of actors and their profiles
+GET http://localhost:30080/api/actors HTTP/1.1
+
+###
+
+# IMDB Movie API - retrieve profile of a specific actor by id
+GET http://localhost:30080/api/actors/nm0000206 HTTP/1.1
+
+###
+
+# IMDB Movie API - retrieve profile of actors named Keanu
+GET http://localhost:30080/api/actors?q=keanu HTTP/1.1
+
+###
+
+# IMDB Movie API - retrieve genres
+GET http://localhost:30080/api/genres HTTP/1.1
+
+###
+
+# IMDB Movie API - retrieve movies
+GET http://localhost:30080/api/movies HTTP/1.1
+
+###
+
+# IMDB Movie API - retrieve movie by id
+GET http://localhost:30080/api/movies/tt0133093 HTTP/1.1
+
+###
+
+# IMDB Movie API - filter movies named Matrix
+GET http://localhost:30080/api/movies?q=matrix HTTP/1.1
+
+###
+
+# IMDB Movie API - filter movies in the action genre
+GET http://localhost:30080/api/movies?genre=action HTTP/1.1
+
+###
+
+# IMDB Movie API - filter movies released in 1999
+GET http://localhost:30080/api/movies?year=1999 HTTP/1.1
+
+###
+
+# IMDB Movie API - filter movies with ration of 8.0
+GET http://localhost:30080/api/movies?rating=8.0 HTTP/1.1
+
+###
+
+# WebValidate version
+# note the / url will fail by design
+GET http://localhost:30088/version HTTP/1.1
+
+###
+
+# WebValidate metrics
+GET http://localhost:30088/metrics HTTP/1.1
