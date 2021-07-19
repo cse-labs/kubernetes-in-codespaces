@@ -1,4 +1,4 @@
-# Kind Dev Cluster on Codespaces Template
+# Kind Dev Cluster on Codespaces (Spark)
 
 > Setup a Kubernetes Developer Cluster using `kind` or `k3d` running in [GitHub Codespaces](https://github.com/features/codespaces)
 
@@ -6,11 +6,11 @@
 
 > [GitHub Codespaces](https://github.com/features/codespaces) is currently in preview
 
-## Overview
-
-This is a template that will setup a Kubernetes developer cluster using `Kind` and `GitHub Codespaces`
-
-Create your repo from this template and add your application code
+- An invitation will be sent to you during the live Spark session
+  - You must have a GitHub ID with 2FA enabled
+  - You must accept the invitation
+    - via the email link
+    - via <https://github.com/asb-spark>
 
 ## Open with Codespaces
 
