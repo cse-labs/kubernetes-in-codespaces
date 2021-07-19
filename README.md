@@ -11,12 +11,16 @@
   - You must accept the invitation
     - via the email link
     - via <https://github.com/asb-spark>
+- You will have access to Codespaces on the repo until August 1
+- If you have `dotfiles` that use zsh, please use bash for the Spark live event
+  - If you use zsh after the live event, we LOVE PRs
 
 ## Open with Codespaces
 
 - Click the `Code` button on your repo
 - Click `Open with Codespaces`
 - Click `New Codespace`
+- Choose the `4 core option`
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
@@ -27,10 +31,13 @@
 ## Build and Deploy Cluster
 
 By default the solution will create a `kind` cluster. If you want to use [k3d](https://k3d.io/), run the make commands from the `k3d` directory
-  
+
+> For the Spark live event, please use `kind` - you can run through again with `k3d` after the live event
+
   ```bash
 
   # (optional) use the k3d makefile
+  # please use kind for the Spark live event
   cd k3d
 
   # build the cluster
