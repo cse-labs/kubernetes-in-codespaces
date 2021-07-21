@@ -51,14 +51,19 @@ default      ngsa-memory                               1/1   Running   0   33s
 monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
 monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
 
-# curl all of the endpoints
-{ "apiVersion": "1.0", "appVersion": "0.1.1-0210-0338", "language": "C#" }
+```
 
-0.1.1-0210-0537
+## Service endpoints
 
-<a href="/graph">Found</a>.
+- All endpoints are usable in your browser via clicking on the `Ports (4)` tab
+  - Select the `open in browser icon` on the far right
+- Some popup blockers block the new browser tab
+- If you get a gateway error, just hit refresh - it will clear once the port-forward is ready
 
-<a href="/login">Found</a>.
+```bash
+
+# check endpoints
+make check
 
 ```
 
@@ -74,20 +79,6 @@ monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
   - To exit - `:q <enter>`
 
 ![k9s](./images/k9s.png)
-
-## Service endpoints
-
-- All endpoints are usable in your browser via clicking on the `Ports (4)` tab
-  - Select the `open in browser icon` on the far right
-- Some popup blockers block the new browser tab
-- If you get a gateway error, just hit refresh - it will clear once the port-forward is ready
-
-```bash
-
-# check endpoints
-make check
-
-```
 
 ### Other interesting endpoints
 
