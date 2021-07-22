@@ -116,7 +116,7 @@ app :
 
 webv :
 	# build the local image and load into k3d
-	docker build ../webvalidte -t webv:local
+	docker build ../../webvalidate -t webv:local
 	
 	k3d image import webv:local
 
