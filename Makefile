@@ -124,24 +124,24 @@ webv :
 
 test :
 	# use WebValidate to run a test
-	webv --verbose --server http://localhost:30080 --files webv/baseline.json
+	cd webv && webv --verbose --server http://localhost:30080 --files baseline.json
 	# the 400 and 404 results are expected
 	# Errors and ValidationErrorCount should both be 0
 
 load-test :
 	# use WebValidate to run a 60 second test
-	webv --verbose --server http://localhost:30080 --files webv/benchmark.json --run-loop --sleep 100 --duration 60
+	cd webv && webv --verbose --server http://localhost:30080 --files benchmark.json --run-loop --sleep 100 --duration 60
 
 reset-prometheus :
 	# remove and create the /prometheus volume
-	-kubectl delete -f deploy/prometheus/3-prometheus-deployment.yaml
+	@kubectl delete -f deploy/prometheus/3-prometheus-deployment.yaml --ignore-not-found=true
 	@sudo rm -rf /prometheus/wal
 	@sudo chown -R 65534:65534 /prometheus
 	# redeploy Prometheus - kubectl apply -f deploy/prometheus
 
 reset-grafana :
 	# remove and copy the data to /grafana volume
-	-kubectl delete -f deploy/grafana/deployment.yaml
+	@kubectl delete -f deploy/grafana/deployment.yaml --ignore-not-found=true
 	@sudo rm -f /grafana/grafana.db
 	@sudo cp -R deploy/grafanadata/grafana.db /grafana
 	@sudo chown -R 472:472 /grafana
