@@ -12,8 +12,7 @@
     - via the email link
     - via <https://github.com/asb-spark>
 - You will have access to Codespaces on the repo until August 1
-- If you have `dotfiles` that use zsh, please use bash for the Spark live event
-  - If you use zsh after the live event, we LOVE PRs
+- If you have `dotfiles` that use bash, please use zsh for the Spark live event
 
 ## Open with Codespaces
 
