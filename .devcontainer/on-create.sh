@@ -11,4 +11,7 @@ sudo rm -f /grafana/grafana.db
 sudo cp deploy/grafanadata/grafana.db /grafana
 sudo chown -R 472:472 /grafana
 
+# install WebV
+dotnet tool install -g webvalidate
+
 echo "on-create complete" >> ~/status
