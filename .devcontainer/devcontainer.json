@@ -1,27 +1,52 @@
 {
-	"name": "akdc-kind",
-	"remoteUser": "vscode",
-	"image": "ghcr.io/retaildevcrews/kind:beta",
-	"runArgs": [
-		"--init",
-		"--privileged"
-	],
+	"name": "Kind-K3d-in-Docker",
+	"dockerFile": "Dockerfile",
+
+	// do not change these if you want Docker in Docker support
+	"runArgs": ["--init", "--privileged"],
+	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" ],
 	"overrideCommand": false,
-	"settings": { },
+
+	// some base images require a specific user name
+	"remoteUser": "vscode",
+
+	// Set container specific settings
+	"settings": {
+		"terminal.integrated.defaultProfile.linux": "zsh"
+	},
+
+	// forward ports for the app
 	"forwardPorts": [
 		30000,
 		30080,
 		30088,
 		32000
 	],
+
+	// add labels
+	"portsAttributes": {
+		"30000": { "label": "Prometheus" },
+		"30080": { "label": "ngsa-app" },
+		"30088": { "label": "WebV" },
+		"32000": { "label": "Grafana" },
+	},
+
 	// Install extensions
 	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"ms-kubernetes-tools.vscode-kubernetes-tools",
 		"davidanson.vscode-markdownlint",
 		"gruntfuggly.todo-tree",
-		"ms-azuretools.vscode-docker",
 		"mutantdino.resourcemonitor",
 		"humao.rest-client"
 	],
-	// Run Bash script in .devcontainer directory
-	"postCreateCommand": "/bin/bash ./.devcontainer/post-install.sh"
+
+	// Use 'onCreateCommand' to run commands as part of container creation.
+	"onCreateCommand": "/bin/bash -c .devcontainer/on-create.sh",
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "/bin/bash -c .devcontainer/post-create.sh",
+
+	// Use 'postStartCommand' to run commands after the container starts.
+	"postStartCommand": "/bin/bash -c .devcontainer/post-start.sh"
 }
