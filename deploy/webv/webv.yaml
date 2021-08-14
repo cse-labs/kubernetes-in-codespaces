@@ -12,6 +12,13 @@ spec:
 
     image: ghcr.io/retaildevcrews/webvalidate:beta
     imagePullPolicy: Always
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+      requests: 
+        memory: "256Mi"
+        cpu: "250m"
 
     args: 
     - --sleep

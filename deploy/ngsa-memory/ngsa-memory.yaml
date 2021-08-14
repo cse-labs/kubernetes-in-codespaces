@@ -10,6 +10,13 @@ spec:
   - name: ds
     imagePullPolicy: Always
     image: ghcr.io/retaildevcrews/ngsa-app:beta
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+      requests: 
+        memory: "256Mi"
+        cpu: "250m"
     args:
       - --in-memory
       - --prometheus

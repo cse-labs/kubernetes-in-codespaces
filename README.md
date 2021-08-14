@@ -1,36 +1,73 @@
-# Kind Dev Cluster on Codespaces (Spark)
+# Kubernetes in Codespaces
 
-> Setup a Kubernetes Developer Cluster using `kind` running in [GitHub Codespaces](https://github.com/features/codespaces)
+> Setup a Kubernetes cluster using `kind` running in [GitHub Codespaces](https://github.com/features/codespaces)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-> [GitHub Codespaces](https://github.com/features/codespaces) is currently in preview
+## Overview
 
-- An invitation will be sent to you during the live Spark session
-  - You must have a GitHub ID with 2FA enabled
-  - You must accept the invitation
-    - via the email link
-    - via <https://github.com/asb-spark>
-- You will have access to Codespaces on the repo until August 1
-- If you have `dotfiles` that use bash, please use zsh for the Spark live event
+We use this for `inner-loop` Kubernetes development. Note that it is not appropriate for production use but is a great `Developer Experience`. Feedback calls the approach `game-changing` - we hope you agree!
+
+## Notes for the Hands-on Lab
+
+We have over 250 registrations!!!
+
+Please mute your Teams client unless you're asking a question.
+
+Please turn your cameras off. While we love to see your smiling faces, we have a lot of people registered and this will save us a lot of bandwidth.
+
+Please raise your hand or use the Teams chat to ask questions. We will have several team members available to answer questions. The presenters will pause after every step to address any issues or questions.
+
+We are on a tight schedule, so we may have to `table` discussions. We can follow up offline or setup follow-on sessions if there is enough interest in the topic.
+
+We may have some suprises and maybe a surprise guest or two ... :)
+
+This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash but hasn't been fully tested. For the HoL, please use zsh to avoid any issues.
+
+You can run the `dev container` locally and you can also connect to the Codespace with a local version of VS Code. For the HoL, please use GitHub Codespaces in your browser to avoid any issues.
+
+You will have access after the event, so please experiment and add any issues to the GitHub repo. 
+
+We LOVE PRs!
+
+Enough of the `fine print` - let's hack!
+
+## Shoutout for the "."
+
+GitHub just released some pretty AWESOME new features including `"."` and `Codespaces`
+
+Congratulations to the GitHub team on an amazing release!
+
+HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support over the last 18 months that got us to this point. Thank You! We literally couldn't have done this without you.
 
 ## Open with Codespaces
+
+> Note this screen shot is a little out of date with the released version of Codespaces
 
 - Click the `Code` button on your repo
 - Click `Open with Codespaces`
 - Click `New Codespace`
-- Choose the `4 core option`
+- Choose the `4 core` option
+  - 2 core isn't enough to run everything well
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
 ## Open Workspace
 
+> Another late change - wait until the Codespace is ready before opening the workspace
+
 - When prompted, choose `Open Workspace`
 
 ## Build and Deploy Cluster
 
+By default the solution will create a `kind` cluster. If you want to use [k3d](https://k3d.io/), run the make commands from the `k3d` directory
+
   ```bash
 
+  # (optional) use the k3d makefile
+  cd k3d
+
+  # build the cluster
   make all
 
   ```
@@ -201,6 +238,93 @@ make app
 ## Next Steps
 
 > [Makefile](./Makefile) is a good place to start exploring
+
+## dapr Lab
+
+> make sure you are in the root of the repo
+
+### Create and run a Web API app with dapr
+
+Create a new dotnet webapi project
+
+```bash
+
+mkdir -p dapr-app
+cd dapr-app
+dotnet new webapi --no-https
+
+```
+
+Run the app with dapr
+
+```bash
+
+dapr run -a myapp -p 5000 -H 3500 -- dotnet run
+
+```
+
+Check the endpoints
+
+- open `dapr.http`
+  - click on the `dotnet app` `send request` link
+  - click on the `dapr endpoint` `send request` link
+
+Open Zipkin
+
+- Click on the `Ports` tab
+  - Open the `Zipkin` link
+  - Click on `Run Query`
+    - Explore the traces generated automatically with dapr
+
+Stop the app by pressing `ctl-c`
+
+Clean up
+
+```bash
+
+cd ..
+rm -rf dapr-app
+
+```
+
+### Add dapr SDK to the weather app
+
+> Changes to the app have already been made and are detailed below
+
+- Open `.vscode/launch.json`
+  - Added `.NET Core Launch (web) with Dapr` configuration
+- Open `.vscode/task.json`
+  - Added `daprd-debug` and `daprd-down` tasks
+- Open `weather/weather.csproj`
+  - Added `dapr.aspnetcore` package reference
+- Open `weather/Startup.cs`
+  - Injected dapr into the services
+    - Line 29 `services.AddControllers().AddDapr()`
+  - Added `Cloud Events`
+    - Line 40 `app.UseCloudEvents()`
+- Open `weather/Controllers/WeatherForecastController.cs`
+  - `PostWeatherForecast` is a new function for `sending` pub-sub events
+    - Added the `Dapr.Topic` attribute
+    - Got the `daprClient` via Dependency Injection
+    - Published the model to the `State Store`
+  - `Get`
+    - Added the `daprClient` via Dependency Injection
+    - Retrieved the model from the `State Store`
+  - Set a breakpoint on lines 30 and 38
+
+### Run the dapr weather app
+
+- Press `F5` to run
+- Open `dapr.http`
+  - Send a message via dapr
+    - Click on `Send Request` under `post to dapr`
+    - Click `continue` when you hit the breakpoint
+    - 200 OK
+  - Get the model from the `State Store`
+    - Click on `Send Request` under `dapr endpoint`
+    - Click `continue` when you hit the breakpoint
+    - Verify the value from the POST request appears
+  - Change the `temperatureC` value in POST request and repeat
 
 ## FAQ
 

@@ -1,0 +1,20 @@
+# dapr endpoints
+
+# dotnet app
+GET http://localhost:5000/weatherforecast HTTP/1.1
+
+###
+
+# dapr endpoint
+GET http://localhost:3500/v1.0/invoke/myapp/method/weatherforecast HTTP/1.1
+
+###
+
+# post to dapr
+POST http://localhost:3500/v1.0/publish/pubsub/new HTTP/1.1
+Content-Type: application/json
+
+{
+    "Summary": "hot",
+    "TemperatureC": "38"
+}
