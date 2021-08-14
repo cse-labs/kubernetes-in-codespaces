@@ -14,7 +14,7 @@ help :
 	@echo "   make webv             - build and deploy a local WebV docker image"
 	@echo "   make jumpbox          - deploy a 'jumpbox' pod"
 
-all : create deploy jumpbox
+all : create deploy
 
 delete :
 	# delete the cluster (if exists)
@@ -31,7 +31,7 @@ create : delete
 	# wait for cluster to be ready
 	@kubectl wait node --for condition=ready --all --timeout=60s
 
-deploy :
+deploy : jumpbox
 	# deploy the app
 	@# continue on most errors
 	-kubectl apply -f deploy/ngsa-memory
