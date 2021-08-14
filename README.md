@@ -1,36 +1,60 @@
-# Kubernetes Dev Cluster on Codespaces Template
+# Kubernetes in Codespaces
 
-> Setup a Kubernetes Developer Cluster using `kind` or `k3d` running in [GitHub Codespaces](https://github.com/features/codespaces)
+> Setup a Kubernetes cluster using `kind` running in [GitHub Codespaces](https://github.com/features/codespaces)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-> [GitHub Codespaces](https://github.com/features/codespaces) is currently in `limited public beta`
-
 ## Overview
 
-This is a template that will setup a Kubernetes developer cluster using `Kind` or `K3d` in a `GitHub Codespace` or local `Dev Container`
+We use this for `inner-loop` Kubernetes development. Note that it is not appropriate for production use but is a great `Developer Experience`. Feedback calls the approach `game-changing` - we hope you agree!
 
-We use this for `inner-loop` Kubernetes development. Note that it is not appropriate for production use (but is a great `Developer Experience`)
+## Notes for the Hands-on Lab
 
-> This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash ...
+We have over 250 registrations!!!
 
-## Create your repo
+Please mute your Teams client unless you're asking a question.
 
-Create your repo from this template and add your application code
+Please turn your cameras off. While we love to see your smiling faces, we have a lot of people registered and this will save us a lot of bandwidth.
 
-- Click the `Use this template` button
-- Enter your repo details
+Please raise your hand or use the Teams chat to ask questions. We will have several team members available to answer questions. The presenters will pause after every step to address any issues or questions.
+
+We are on a tight schedule, so we may have to `table` discussions. We can follow up offline or setup follow-on sessions if there is enough interest in the topic.
+
+We may have some suprises and maybe a surprise guest or two ... :)
+
+This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash but hasn't been fully tested. For the HoL, please use zsh to avoid any issues.
+
+You can run the `dev container` locally and you can also connect to the Codespace with a local version of VS Code. For the HoL, please use GitHub Codespaces in your browser to avoid any issues.
+
+You will have access after the event, so please experiment and add any issues to the GitHub repo. 
+
+We LOVE PRs!
+
+Enough of the `fine print` - let's hack!
+
+## Shoutout for the "."
+
+GitHub just released some pretty AWESOME new features including `"."` and `Codespaces`
+
+Congratulations to the GitHub team on an amazing release!
+
+HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support over the last 18 months that got us to this point. Thank You! We literally couldn't have done this without you.
 
 ## Open with Codespaces
+
+> Note this screen shot is a little out of date with the released version of Codespaces
 
 - Click the `Code` button on your repo
 - Click `Open with Codespaces`
 - Click `New Codespace`
-- Choose the `4 core` or `8 core` option
+- Choose the `4 core` option
+  - 2 core isn't enough to run everything well
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
 ## Open Workspace
+
+> Another late change - wait until the Codespace is ready before opening the workspace
 
 - When prompted, choose `Open Workspace`
 
