@@ -24,32 +24,11 @@ spec:
         limits:
           cpu: 200m
           memory: 256Mi
+        requests: 
+          memory: "64Mi"
+          cpu: "100m"
 
       env:
-      - name: WorkspaceId
-        valueFrom:
-          secretKeyRef:
-            name: log-secrets
-            key: WorkspaceId
-
-      - name: SharedKey
-        valueFrom:
-          secretKeyRef:
-            name: log-secrets
-            key: SharedKey
-
-      - name: ngsaLog
-        valueFrom:
-          configMapKeyRef:
-            name: log-config
-            key: ngsaLog
-
-      - name: webvLog
-        valueFrom:
-          configMapKeyRef:
-            name: log-config
-            key: webvLog
-
       - name: Zone
         valueFrom:
           configMapKeyRef:

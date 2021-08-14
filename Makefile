@@ -1,4 +1,4 @@
-.PHONY: help all create delete deploy check clean app webv test load-test reset-prometheus reset-grafana jumpbox
+.PHONY: help all create delete deploy check clean app webv test load-test jumpbox
 
 help :
 	@echo "Usage:"
@@ -12,18 +12,16 @@ help :
 	@echo "   make clean            - delete the apps from the cluster"
 	@echo "   make app              - build and deploy a local app docker image"
 	@echo "   make webv             - build and deploy a local WebV docker image"
-	@echo "   make reset-prometheus - reset the Prometheus volume (existing data is deleted)"
-	@echo "   make reset-grafana    - reset the Grafana volume (existing data is deleted)"
 	@echo "   make jumpbox          - deploy a 'jumpbox' pod"
 
-all : delete create deploy jumpbox
+all : create deploy jumpbox
 
 delete :
 	# delete the cluster (if exists)
 	@# this will fail harmlessly if the cluster does not exist
 	@kind delete cluster
 
-create :
+create : delete
 	# create the cluster and wait for ready
 	@# this will fail harmlessly if the cluster exists
 	@# default cluster name is kind
@@ -131,21 +129,6 @@ test :
 load-test :
 	# use WebValidate to run a 60 second test
 	cd webv && webv --verbose --server http://localhost:30080 --files benchmark.json --run-loop --sleep 100 --duration 60
-
-reset-prometheus :
-	# remove and create the /prometheus volume
-	@kubectl delete -f deploy/prometheus/3-prometheus-deployment.yaml --ignore-not-found=true
-	@sudo rm -rf /prometheus/wal
-	@sudo chown -R 65534:65534 /prometheus
-	# redeploy Prometheus - kubectl apply -f deploy/prometheus
-
-reset-grafana :
-	# remove and copy the data to /grafana volume
-	@kubectl delete -f deploy/grafana/deployment.yaml --ignore-not-found=true
-	@sudo rm -f /grafana/grafana.db
-	@sudo cp -R deploy/grafanadata/grafana.db /grafana
-	@sudo chown -R 472:472 /grafana
-	# redeploy Grafana - kubectl apply -f deploy/grafana
 
 jumpbox :
 	@# start a jumpbox pod

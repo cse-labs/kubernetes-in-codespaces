@@ -1,25 +1,32 @@
-# Kind Dev Cluster on Codespaces (Spark)
+# Kubernetes Dev Cluster on Codespaces Template
 
-> Setup a Kubernetes Developer Cluster using `kind` running in [GitHub Codespaces](https://github.com/features/codespaces)
+> Setup a Kubernetes Developer Cluster using `kind` or `k3d` running in [GitHub Codespaces](https://github.com/features/codespaces)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-> [GitHub Codespaces](https://github.com/features/codespaces) is currently in preview
+> [GitHub Codespaces](https://github.com/features/codespaces) is currently in `limited public beta`
 
-- An invitation will be sent to you during the live Spark session
-  - You must have a GitHub ID with 2FA enabled
-  - You must accept the invitation
-    - via the email link
-    - via <https://github.com/asb-spark>
-- You will have access to Codespaces on the repo until August 1
-- If you have `dotfiles` that use bash, please use zsh for the Spark live event
+## Overview
+
+This is a template that will setup a Kubernetes developer cluster using `Kind` or `K3d` in a `GitHub Codespace` or local `Dev Container`
+
+We use this for `inner-loop` Kubernetes development. Note that it is not appropriate for production use (but is a great `Developer Experience`)
+
+> This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash ...
+
+## Create your repo
+
+Create your repo from this template and add your application code
+
+- Click the `Use this template` button
+- Enter your repo details
 
 ## Open with Codespaces
 
 - Click the `Code` button on your repo
 - Click `Open with Codespaces`
 - Click `New Codespace`
-- Choose the `4 core option`
+- Choose the `4 core` or `8 core` option
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
@@ -29,8 +36,14 @@
 
 ## Build and Deploy Cluster
 
+By default the solution will create a `kind` cluster. If you want to use [k3d](https://k3d.io/), run the make commands from the `k3d` directory
+
   ```bash
 
+  # (optional) use the k3d makefile
+  cd k3d
+
+  # build the cluster
   make all
 
   ```
@@ -201,6 +214,93 @@ make app
 ## Next Steps
 
 > [Makefile](./Makefile) is a good place to start exploring
+
+## dapr Lab
+
+> make sure you are in the root of the repo
+
+### Create and run a Web API app with dapr
+
+Create a new dotnet webapi project
+
+```bash
+
+mkdir -p dapr-app
+cd dapr-app
+dotnet new webapi --no-https
+
+```
+
+Run the app with dapr
+
+```bash
+
+dapr run -a myapp -p 5000 -H 3500 -- dotnet run
+
+```
+
+Check the endpoints
+
+- open `dapr.http`
+  - click on the `dotnet app` `send request` link
+  - click on the `dapr endpoint` `send request` link
+
+Open Zipkin
+
+- Click on the `Ports` tab
+  - Open the `Zipkin` link
+  - Click on `Run Query`
+    - Explore the traces generated automatically with dapr
+
+Stop the app by pressing `ctl-c`
+
+Clean up
+
+```bash
+
+cd ..
+rm -rf dapr-app
+
+```
+
+### Add dapr SDK to the weather app
+
+> Changes to the app have already been made and are detailed below
+
+- Open `.vscode/launch.json`
+  - Added `.NET Core Launch (web) with Dapr` configuration
+- Open `.vscode/task.json`
+  - Added `daprd-debug` and `daprd-down` tasks
+- Open `weather/weather.csproj`
+  - Added `dapr.aspnetcore` package reference
+- Open `weather/Startup.cs`
+  - Injected dapr into the services
+    - Line 29 `services.AddControllers().AddDapr()`
+  - Added `Cloud Events`
+    - Line 40 `app.UseCloudEvents()`
+- Open `weather/Controllers/WeatherForecastController.cs`
+  - `PostWeatherForecast` is a new function for `sending` pub-sub events
+    - Added the `Dapr.Topic` attribute
+    - Got the `daprClient` via Dependency Injection
+    - Published the model to the `State Store`
+  - `Get`
+    - Added the `daprClient` via Dependency Injection
+    - Retrieved the model from the `State Store`
+  - Set a breakpoint on lines 30 and 38
+
+### Run the dapr weather app
+
+- Press `F5` to run
+- Open `dapr.http`
+  - Send a message via dapr
+    - Click on `Send Request` under `post to dapr`
+    - Click `continue` when you hit the breakpoint
+    - 200 OK
+  - Get the model from the `State Store`
+    - Click on `Send Request` under `dapr endpoint`
+    - Click `continue` when you hit the breakpoint
+    - Verify the value from the POST request appears
+  - Change the `temperatureC` value in POST request and repeat
 
 ## FAQ
 

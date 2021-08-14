@@ -12,6 +12,13 @@ spec:
 
     image: webv:local
     imagePullPolicy: Never
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+      requests: 
+        memory: "256Mi"
+        cpu: "250m"
 
     args: 
     - --server
