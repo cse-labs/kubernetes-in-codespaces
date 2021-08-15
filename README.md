@@ -54,18 +54,15 @@ HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support ov
 
 ## Open Workspace
 
+> Important!
+>
 > Another late change - wait until the Codespace is ready before opening the workspace
 
 - When prompted, choose `Open Workspace`
 
-## Build and Deploy Cluster
-
-By default the solution will create a `kind` cluster. If you want to use [k3d](https://k3d.io/), run the make commands from the `k3d` directory
+## Build and Deploy a Kind Cluster
 
   ```bash
-
-  # (optional) use the k3d makefile
-  cd k3d
 
   # build the cluster
   make all
@@ -91,7 +88,7 @@ monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
 
 ## Service endpoints
 
-- All endpoints are usable in your browser via clicking on the `Ports (4)` tab
+- All endpoints are usable in your browser via clicking on the `Ports` tab
   - Select the `open in browser icon` on the far right
 - Some popup blockers block the new browser tab
 - If you get a gateway error, just hit refresh - it will clear once the port-forward is ready

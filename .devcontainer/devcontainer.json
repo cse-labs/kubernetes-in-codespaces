@@ -16,7 +16,7 @@
 	},
 
 	"hostRequirements": {
-		"memory": "8gb"
+		"cpus": 4
 	},
 	
 	// forward ports for the app
