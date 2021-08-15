@@ -1,5 +1,5 @@
 {
-	"name": "Kind-K3d-in-Docker",
+	"name": "dapr-in-Kubernetes",
 	"dockerFile": "Dockerfile",
 
 	// do not change these if you want Docker in Docker support
