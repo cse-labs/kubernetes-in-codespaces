@@ -1,5 +1,5 @@
 {
-	"name": "dapr-in-Kubernetes",
+	"name": "Kubernetes-in-Codespaces",
 	"dockerFile": "Dockerfile",
 
 	// do not change these if you want Docker in Docker support
