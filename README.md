@@ -10,7 +10,7 @@ We use this for `inner-loop` Kubernetes development. Note that it is not appropr
 
 ## Notes for the Hands-on Lab
 
-We have over 250 registrations!!!
+We have over 300 people registered!!!
 
 Please mute your Teams client unless you're asking a question.
 
@@ -18,17 +18,19 @@ Please turn your cameras off. While we love to see your smiling faces, we have a
 
 Please raise your hand or use the Teams chat to ask questions. We will have several team members available to answer questions. The presenters will pause after every step to address any issues or questions.
 
-We are on a tight schedule, so we may have to `table` discussions. We can follow up offline or setup follow-on sessions if there is enough interest in the topic.
+For ideas, feature requests, future sessions and any long-running discussion, please use GitHub discussions so we can collaborate and follow up.
 
-We may have some suprises and maybe a surprise guest or two ... :)
+We are on a tight schedule, so we may have to `table` discussions. We will use GitHub Discussions to follow up and setup follow-on sessions if there is enough interest in the topic. Please `up vote` and `react` to the discussion topics that are interesting to you.
+
+We may have a surprise guest or two ... :)
 
 This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash but hasn't been fully tested. For the HoL, please use zsh to avoid any issues.
 
 You can run the `dev container` locally and you can also connect to the Codespace with a local version of VS Code. For the HoL, please use GitHub Codespaces in your browser to avoid any issues.
 
-You will have access after the event, so please experiment and add any issues to the GitHub repo. 
+You will have access after the event, so please experiment and add any issues to the GitHub Discussion. 
 
-We LOVE PRs!
+We LOVE PRs! (this is a downstream repo, so post in GitHub Discussions if you want to PR and we'll point you to the right repo and ensure access)
 
 Enough of the `fine print` - let's hack!
 
@@ -43,6 +45,8 @@ HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support ov
 ## Open with Codespaces
 
 > Note this screen shot is a little out of date with the released version of Codespaces
+>
+> We LOVE PRs ... :)
 
 - Click the `Code` button on your repo
 - Click `Open with Codespaces`
@@ -57,6 +61,8 @@ HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support ov
 > Important!
 >
 > Another late change - wait until the Codespace is ready before opening the workspace
+>
+> We LOVE PRs ... :)
 
 - When prompted, choose `Open Workspace`
 
