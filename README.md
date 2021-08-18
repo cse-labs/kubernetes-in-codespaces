@@ -201,7 +201,7 @@ make load-test
   - The metric will go back to green (1.0)
   - The request graph will return to normal
 
-![Load Test](./images/LoadTest.jpg)
+![Load Test](./images/test-with-errors-and-load-test.png)
 
 ## View Fluent Bit Logs
 
