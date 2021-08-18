@@ -72,7 +72,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(NgsaAppDuration_bucket[1m])) by (category)",
+          "expr": "sum(rate(NgsaAppDuration_bucket[1m])) by (mode)",
           "interval": "",
           "legendFormat": "{{category}}",
           "refId": "A"
@@ -406,7 +406,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(rate(NgsaAppDuration_bucket{code != \"OK\"}[1m])) by (category)",
+          "expr": "sum(rate(NgsaAppDuration_bucket{code != \"OK\"}[1m])) by (mode)",
           "interval": "",
           "legendFormat": "{{category}}",
           "refId": "A"

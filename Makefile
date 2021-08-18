@@ -14,7 +14,7 @@ help :
 	@echo "   make webv             - build and deploy a local WebV docker image"
 	@echo "   make jumpbox          - deploy a 'jumpbox' pod"
 
-all : create deploy
+all : create deploy jumpbox
 
 delete :
 	# delete the cluster (if exists)
@@ -31,7 +31,7 @@ create : delete
 	# wait for cluster to be ready
 	@kubectl wait node --for condition=ready --all --timeout=60s
 
-deploy : jumpbox
+deploy :
 	# deploy the app
 	@# continue on most errors
 	-kubectl apply -f deploy/ngsa-memory
@@ -131,10 +131,25 @@ load-test :
 	cd webv && webv --verbose --server http://localhost:30080 --files benchmark.json --run-loop --sleep 100 --duration 60
 
 jumpbox :
-	@# start a jumpbox pod
+	# start a jumpbox pod
 	@-kubectl delete pod jumpbox --ignore-not-found=true
 
-	@kubectl run jumpbox --image=alpine --restart=Always -- /bin/sh -c "trap : TERM INT; sleep 9999999999d & wait"
+	@kubectl run jumpbox --image=ghcr.io/retaildevcrews/alpine --restart=Always -- /bin/sh -c "trap : TERM INT; sleep 9999999999d & wait"
+	@kubectl wait pod jumpbox --for condition=ready --timeout=30s
+
+	###### If you get an error after this  ####
+	# run make patch-jumpbox
+	@kubectl exec jumpbox -- /bin/sh -c "apk update && apk add bash curl nano jq py-pip" > /dev/null
+	@kubectl exec jumpbox -- /bin/sh -c "pip3 install --upgrade pip setuptools httpie" > /dev/null
+	@kubectl exec jumpbox -- /bin/sh -c "echo \"alias ls='ls --color=auto'\" >> /root/.profile && echo \"alias ll='ls -lF'\" >> /root/.profile && echo \"alias la='ls -alF'\" >> /root/.profile && echo 'cd /root' >> /root/.profile" > /dev/null
+
+	# Run an interactive bash shell in the jumpbox
+	# kj
+	# use kje <command>
+	# kje http ngsa-memory:8080/version
+
+patch-jumpbox :
+	@# in case of ddos
 	@kubectl wait pod jumpbox --for condition=ready --timeout=30s
 	@kubectl exec jumpbox -- /bin/sh -c "apk update && apk add bash curl nano jq py-pip" > /dev/null
 	@kubectl exec jumpbox -- /bin/sh -c "pip3 install --upgrade pip setuptools httpie" > /dev/null

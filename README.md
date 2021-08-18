@@ -28,7 +28,7 @@ This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash
 
 You can run the `dev container` locally and you can also connect to the Codespace with a local version of VS Code. For the HoL, please use GitHub Codespaces in your browser to avoid any issues.
 
-You will have access after the event, so please experiment and add any issues to the GitHub Discussion. 
+You will have access after the event, so please experiment and add any issues to the GitHub Discussion.
 
 We LOVE PRs! (this is a downstream repo, so post in GitHub Discussions if you want to PR and we'll point you to the right repo and ensure access)
 
@@ -74,6 +74,33 @@ HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support ov
   make all
 
   ```
+
+## DDOS Issue
+
+> In the morning session, we ran into what we think is a DDOS issue while creating the jumpbox
+
+- Your output should look like this
+
+  ```bash
+
+  # start a jumpbox pod
+  pod "jumpbox" deleted
+  pod/jumpbox created
+  pod/jumpbox condition met
+  ###### If you get an error after this  ####
+  # run make patch-jumpbox
+  # Run an interactive bash shell in the jumpbox
+  # kj
+  # use kje <command>
+  # kje http ngsa-memory:8080/version
+
+  ```
+
+- If the failure as after the comment, run `make patch-jumpbox` until it works
+  - this is the normal failure we saw this morning
+- if the failure was after `start a jumpbox` and before `#### if you get an error ...`
+  - run `make jumpbox`
+- If you see a different error, raise your hand and we'll debug
 
 ![Running Codespace](./images/RunningCodespace.png)
 
@@ -177,7 +204,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - Click on `Home` at the top of the page
 - From the dashboards page, click on `NGSA`
 
-![Grafana](./images/Grafana.jpg)
+![Grafana](./images/ngsa-requests-by-mode.png)
 
 ## Run a load test
 
@@ -201,7 +228,7 @@ make load-test
   - The metric will go back to green (1.0)
   - The request graph will return to normal
 
-![Load Test](./images/LoadTest.jpg)
+![Load Test](./images/test-with-errors-and-load-test.png)
 
 ## View Fluent Bit Logs
 
