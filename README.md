@@ -177,7 +177,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - Click on `Home` at the top of the page
 - From the dashboards page, click on `NGSA`
 
-![Grafana](./images/Grafana.jpg)
+![Grafana](./images/ngsa-requests-by-mode.png)
 
 ## Run a load test
 
