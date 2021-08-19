@@ -344,7 +344,8 @@ rm -rf dapr-app
 
 ### Run the dapr weather app
 
-- Press `F5` to run
+- Click on one of the VS Code panels to make sure it has the focus, then Press `F5` to run
+- Alternatively, you can use the hamburger menu, then **Run** and **Start Debugging**.
 - Open `dapr.http`
   - Send a message via dapr
     - Click on `Send Request` under `post to dapr`
