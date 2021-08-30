@@ -134,7 +134,7 @@ jumpbox :
 	# start a jumpbox pod
 	@-kubectl delete pod jumpbox --ignore-not-found=true
 
-	@kubectl run jumpbox --image=ghcr.io/retaildevcrews/alpine --restart=Always
+	@kubectl run jumpbox --image=ghcr.io/retaildevcrews/jumpbox:latest --restart=Always
 
 	# Run an interactive bash shell in the jumpbox
 	# kj
