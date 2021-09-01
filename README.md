@@ -1,30 +1,33 @@
 # Kubernetes in Codespaces
 
-> Setup a Kubernetes cluster using `kind` running in [GitHub Codespaces](https://github.com/features/codespaces)
+> Setup a Kubernetes cluster using `k3d` running in [GitHub Codespaces](https://github.com/features/codespaces)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## Overview
 
+This is a template that will setup a Kubernetes developer cluster using `k3d` in a `GitHub Codespace` or local `Dev Container`
+
 We use this for `inner-loop` Kubernetes development. Note that it is not appropriate for production use but is a great `Developer Experience`. Feedback calls the approach `game-changing` - we hope you agree!
 
-For ideas, feature requests, future sessions and any long-running discussion, please use GitHub discussions so we can collaborate and follow up.
+For ideas, feature requests, and discussions, please use GitHub discussions so we can collaborate and follow up.
 
 This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash but hasn't been fully tested. For the HoL, please use zsh to avoid any issues.
 
 You can run the `dev container` locally and you can also connect to the Codespace with a local version of VS Code.
 
-You will have access after the event, so please experiment and add any issues to the GitHub Discussion.
+Please experiment and add any issues to the GitHub Discussion. We LOVE PRs!
 
-We LOVE PRs! (this is a downstream repo, so post in GitHub Discussions if you want to PR and we'll point you to the right repo and ensure access)
+## Create your repo
 
-## Shoutout for the "."
+> You must have access to Codespaces as an individual or part of a GitHub Team or GitHub Enterprise Cloud
+>
+> If you are a member of this GitHub organization, you can skip this step and open with Codespaces
 
-GitHub just released some pretty AWESOME new features including `"."` and `Codespaces`
+Create your repo from this template and add your application code
 
-Congratulations to the GitHub team on an amazing release!
-
-HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support over the last 18 months that got us to this point. Thank You! We literally couldn't have done this without you.
+- Click the `Use this template` button
+- Enter your repo details
 
 ## Open with Codespaces
 
@@ -50,7 +53,7 @@ HUGE shoutout and thank you to GitHub, DevDiv and 1ES for the amazing support ov
 
 - When prompted, choose `Open Workspace`
 
-## Build and Deploy a Kind Cluster
+## Build and Deploy a k3d Cluster
 
   ```bash
 
@@ -67,10 +70,10 @@ Output from `make all` should resemble this
 
 ```text
 
-default      fluentb                                   1/1   Running   0   31s
 default      jumpbox                                   1/1   Running   0   25s
-default      webv                                      1/1   Running   0   31s
 default      ngsa-memory                               1/1   Running   0   33s
+default      webv                                      1/1   Running   0   31s
+logging      fluentbit                                 1/1   Running   0   31s
 monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
 monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
 
@@ -190,11 +193,13 @@ make load-test
 ## View Fluent Bit Logs
 
 - Start `k9s` from the Codespace terminal
-- Select `fluentb` and press `enter`
+- Press `0` to show all `namespaces`
+- Select `fluentbit` and press `enter`
 - Press `enter` again to see the logs
 - Press `s` to Toggle AutoScroll
 - Press `w` to Toggle Wrap
 - Review logs that will be sent to Log Analytics when configured
+  - See `deploy/loganalytics` for directions
 
 ## Build and deploy a local version of WebValidate
 
@@ -317,7 +322,7 @@ rm -rf dapr-app
 ## FAQ
 
 - Why don't we use helm to deploy Kubernetes manifests?
-  - The target audience for this repository is app developers who are beginning their Kubernetes journey so we chose simplicity for the Developer Experience.
+  - The target audience for this repository is app developers so we chose simplicity for the Developer Experience.
   - In our daily work, we use Helm for deployments and it is installed in the `.devcontainer` should you want to use it.
 
 ### Engineering Docs

@@ -2,8 +2,20 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: log-config
+  namespace: logging
 data:
   Region: "Dev"
   Zone: "Dev"
   webvLog: "webvdev"
   ngsaLog: "ngsadev"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: log-secrets
+  namespace: logging
+type: Opaque
+data:
+  WorkspaceId: ZGV2Cg==
+  SharedKey: ZGV2Cg==

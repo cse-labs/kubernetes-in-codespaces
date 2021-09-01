@@ -3,8 +3,8 @@
 help :
 	@echo "Usage:"
 	@echo "   make all              - create a cluster and deploy the apps"
-	@echo "   make create           - create a kind cluster"
-	@echo "   make delete           - delete the kind cluster"
+	@echo "   make create           - create a k3d cluster"
+	@echo "   make delete           - delete the k3d cluster"
 	@echo "   make deploy           - deploy the apps to the cluster"
 	@echo "   make check            - check the endpoints with curl"
 	@echo "   make test             - run a WebValidate test"
@@ -19,45 +19,43 @@ all : create deploy jumpbox
 delete :
 	# delete the cluster (if exists)
 	@# this will fail harmlessly if the cluster does not exist
-	@kind delete cluster
+	@k3d cluster delete
 
 create : delete
-	# create the cluster and wait for ready
+	@# create the cluster and wait for ready
 	@# this will fail harmlessly if the cluster exists
-	@# default cluster name is kind
+	@# default cluster name is k3d
 
-	@kind create cluster --config deploy/kind/kind.yaml
+	@k3d cluster create --registry-use k3d-registry.localhost:5000 --config deploy/k3d.yaml --k3s-server-arg "--no-deploy=traefik" --k3s-server-arg "--no-deploy=servicelb"
 
 	# wait for cluster to be ready
 	@kubectl wait node --for condition=ready --all --timeout=60s
+	@sleep 5
+	@kubectl wait pod -A --all --for condition=ready --timeout=60s
 
 deploy :
 	# deploy the app
 	@# continue on most errors
-	-kubectl apply -f deploy/ngsa-memory
+	@kubectl apply -f deploy/ngsa-memory
 
 	# deploy prometheus and grafana
-	-kubectl apply -f deploy/prometheus
-	-kubectl apply -f deploy/grafana
+	@kubectl apply -f deploy/prometheus
+	@kubectl apply -f deploy/grafana
 
 	# deploy fluent bit
-	-kubectl create secret generic log-secrets --from-literal=WorkspaceId=dev --from-literal=SharedKey=dev
-	-kubectl apply -f deploy/fluentbit/account.yaml
-	-kubectl apply -f deploy/fluentbit/log.yaml
-	-kubectl apply -f deploy/fluentbit/stdout-config.yaml
-	-kubectl apply -f deploy/fluentbit/fluentbit-pod.yaml
-
-	# deploy WebV after the app starts
-	@kubectl wait pod ngsa-memory --for condition=ready --timeout=30s
-	-kubectl apply -f deploy/webv
+	@kubectl apply -f deploy/fluentbit
 
 	# wait for the pods to start
 	@kubectl wait pod -n monitoring --for condition=ready --all --timeout=30s
-	@kubectl wait pod fluentb --for condition=ready --timeout=30s
+	@kubectl wait pod -n logging fluentbit --for condition=ready --timeout=30s
+
+	# deploy WebV after the app starts
+	@kubectl wait pod ngsa-memory --for condition=ready --timeout=30s
+	@kubectl apply -f deploy/webv
 	@kubectl wait pod webv --for condition=ready --timeout=30s
 
 	# display pod status
-	@kubectl get po -A | grep "default\|monitoring"
+	@kubectl get po -A | grep "default\|monitoring\|logging"
 
 check :
 	# curl all of the endpoints
@@ -75,17 +73,15 @@ clean :
 	-kubectl delete -f deploy/webv --ignore-not-found=true
 	-kubectl delete -f deploy/ngsa-memory --ignore-not-found=true
 	-kubectl delete ns monitoring --ignore-not-found=true
-	-kubectl delete -f deploy/fluentbit/fluentbit-pod.yaml --ignore-not-found=true
-	-kubectl delete secret log-secrets --ignore-not-found=true
+	-kubectl delete ns logging --ignore-not-found=true
 
 	# show running pods
 	@kubectl get po -A
 
 app :
-	# build the local image and load into kind
-	docker build ../ngsa-app -t ngsa-app:local
-
-	kind load docker-image ngsa-app:local
+	# build push the local image
+	docker build ../ngsa-app -t k3d-registry.localhost:5000/ngsa-app:local
+	docker push k3d-registry.localhost:5000/ngsa-app:local
 
 	# delete WebV
 	-kubectl delete -f deploy/webv --ignore-not-found=true
@@ -96,7 +92,6 @@ app :
 
 	# deploy WebValidate after app starts
 	@kubectl wait pod ngsa-memory --for condition=ready --timeout=30s
-	@sleep 5
 	kubectl apply -f deploy/webv
 	@kubectl wait pod webv --for condition=ready --timeout=30s
 
@@ -106,11 +101,10 @@ app :
 	-http localhost:30080/version
 
 webv :
-	# build the local image and load into kind
-	docker build ../webvalidate -t webv:local
+	# build and push the local image
+	docker build ../webvalidate -t k3d-registry.localhost:5000/webv:local
+	docker push k3d-registry.localhost:5000/webv:local
 	
-	kind load docker-image webv:local
-
 	# delete / create WebValidate
 	-kubectl delete -f deploy/webv --ignore-not-found=true
 	kubectl apply -f deploy/webv-local
@@ -134,7 +128,26 @@ jumpbox :
 	# start a jumpbox pod
 	@-kubectl delete pod jumpbox --ignore-not-found=true
 
-	@kubectl run jumpbox --image=ghcr.io/retaildevcrews/jumpbox:latest --restart=Always
+	@kubectl run jumpbox --image=ghcr.io/retaildevcrews/alpine --restart=Always -- /bin/sh -c "trap : TERM INT; sleep 9999999999d & wait"
+	@kubectl wait pod jumpbox --for condition=ready --timeout=30s
+
+	###### If you get an error after this  ####
+	# run make patch-jumpbox
+	@kubectl exec jumpbox -- /bin/sh -c "apk update && apk add bash curl nano jq py-pip" > /dev/null
+	@kubectl exec jumpbox -- /bin/sh -c "pip3 install --upgrade pip setuptools httpie" > /dev/null
+	@kubectl exec jumpbox -- /bin/sh -c "echo \"alias ls='ls --color=auto'\" >> /root/.profile && echo \"alias ll='ls -lF'\" >> /root/.profile && echo \"alias la='ls -alF'\" >> /root/.profile && echo 'cd /root' >> /root/.profile" > /dev/null
+
+	# Run an interactive bash shell in the jumpbox
+	# kj
+	# use kje <command>
+	# kje http ngsa-memory:8080/version
+
+patch-jumpbox :
+	@# in case of ddos
+	@kubectl wait pod jumpbox --for condition=ready --timeout=30s
+	@kubectl exec jumpbox -- /bin/sh -c "apk update && apk add bash curl nano jq py-pip" > /dev/null
+	@kubectl exec jumpbox -- /bin/sh -c "pip3 install --upgrade pip setuptools httpie" > /dev/null
+	@kubectl exec jumpbox -- /bin/sh -c "echo \"alias ls='ls --color=auto'\" >> /root/.profile && echo \"alias ll='ls -lF'\" >> /root/.profile && echo \"alias la='ls -alF'\" >> /root/.profile && echo 'cd /root' >> /root/.profile" > /dev/null
 
 	# Run an interactive bash shell in the jumpbox
 	# kj

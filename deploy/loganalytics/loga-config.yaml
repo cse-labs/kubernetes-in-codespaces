@@ -21,19 +21,29 @@ data:
 
   output.conf: |
     [OUTPUT]
-        Name                stdout
-        Match               kube.var.log.containers.ngsa*.*
+        Name            azure
+        Match           kube.var.log.containers.webv*.*
+        Customer_ID     ${WorkspaceId}
+        Shared_Key      ${SharedKey}
+        Log_Type        ${webvLog}
+
+    [OUTPUT]
+        Name            azure
+        Match           kube.var.log.containers.ngsa*.*
+        Customer_ID     ${WorkspaceId}
+        Shared_Key      ${SharedKey}
+        Log_Type        ${ngsaLog}
 
   input-kubernetes.conf: |
     [INPUT]
-        Name                tail
-        Tag                 kube.*
-        Path                /var/log/containers/*.log
-        Parser              cri
-        DB                  /var/log/flb_kube.db
-        Mem_Buf_Limit       5MB
-        Skip_Long_Lines     Off
-        Refresh_Interval    10
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/*.log
+        Parser            cri
+        DB                /var/log/flb_kube.db
+        Mem_Buf_Limit     5MB
+        Skip_Long_Lines   Off
+        Refresh_Interval  10
 
   filter-kubernetes.conf: |
     [FILTER]
