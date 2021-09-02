@@ -8,8 +8,8 @@ metadata:
 spec:
   containers:
   - name: ds
-    imagePullPolicy: Never
-    image: ngsa-app:local
+    imagePullPolicy: Always
+    image: k3d-registry.localhost:5500/ngsa-app:local
     resources:
       limits:
         memory: "512Mi"
@@ -30,7 +30,17 @@ spec:
       - dev
     ports:
     - containerPort: 8080
-
+    readinessProbe:
+      initialDelaySeconds: 5
+      httpGet:
+        path: /version
+        port: 8080
+    livenessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 300
+      httpGet:
+        path: /healthz
+        port: 8080
 ---
 
 apiVersion: v1

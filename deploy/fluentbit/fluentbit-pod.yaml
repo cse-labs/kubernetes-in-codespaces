@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: fluentb
-  namespace: default
+  name: fluentbit
+  namespace: logging
   labels:
-    app: fluentb
+    app: fluentbit
 spec:
     priorityClassName: system-node-critical
     serviceAccountName: fluentbit
@@ -26,29 +26,29 @@ spec:
           memory: 256Mi
 
       env:
-      - name: WorkspaceId
-        valueFrom:
-          secretKeyRef:
-            name: log-secrets
-            key: WorkspaceId
+      # - name: WorkspaceId
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: log-secrets
+      #       key: WorkspaceId
 
-      - name: SharedKey
-        valueFrom:
-          secretKeyRef:
-            name: log-secrets
-            key: SharedKey
+      # - name: SharedKey
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: log-secrets
+      #       key: SharedKey
 
-      - name: ngsaLog
-        valueFrom:
-          configMapKeyRef:
-            name: log-config
-            key: ngsaLog
+      # - name: ngsaLog
+      #   valueFrom:
+      #     configMapKeyRef:
+      #       name: log-config
+      #       key: ngsaLog
 
-      - name: webvLog
-        valueFrom:
-          configMapKeyRef:
-            name: log-config
-            key: webvLog
+      # - name: webvLog
+      #   valueFrom:
+      #     configMapKeyRef:
+      #       name: log-config
+      #       key: webvLog
 
       - name: Zone
         valueFrom:

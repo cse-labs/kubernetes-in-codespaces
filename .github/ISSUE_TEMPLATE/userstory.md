@@ -22,14 +22,6 @@ When:
 Where:
  - 
 
-## Tasks
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-
-
 ## Acceptance Criteria
 
 - [ ] 
@@ -42,9 +34,9 @@ Where:
 - [ ] New documentation needed to support the change is created
 - [ ] Validation test run if applicable
 
-## Constraints
-- N/A 
-
-## References:
-- References # 
-
+## Tasks
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
