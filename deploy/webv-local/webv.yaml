@@ -10,7 +10,7 @@ spec:
   containers:
   - name: app
 
-    image: k3d-registry.localhost:5000/webv:local
+    image: k3d-registry.localhost:5500/webv:local
     imagePullPolicy: Always
     resources:
       limits:

@@ -9,7 +9,7 @@ spec:
   containers:
   - name: ds
     imagePullPolicy: Always
-    image: k3d-registry.localhost:5000/ngsa-app:local
+    image: k3d-registry.localhost:5500/ngsa-app:local
     resources:
       limits:
         memory: "512Mi"

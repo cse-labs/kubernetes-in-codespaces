@@ -26,7 +26,7 @@ create : delete
 	@# this will fail harmlessly if the cluster exists
 	@# default cluster name is k3d
 
-	@k3d cluster create --registry-use k3d-registry.localhost:5000 --config deploy/k3d.yaml --k3s-server-arg "--no-deploy=traefik" --k3s-server-arg "--no-deploy=servicelb"
+	@k3d cluster create --registry-use k3d-registry.localhost:5500 --config deploy/k3d.yaml --k3s-server-arg "--no-deploy=traefik" --k3s-server-arg "--no-deploy=servicelb"
 
 	# wait for cluster to be ready
 	@kubectl wait node --for condition=ready --all --timeout=60s
@@ -80,8 +80,8 @@ clean :
 
 app :
 	# build push the local image
-	docker build ../ngsa-app -t k3d-registry.localhost:5000/ngsa-app:local
-	docker push k3d-registry.localhost:5000/ngsa-app:local
+	docker build ../ngsa-app -t k3d-registry.localhost:5500/ngsa-app:local
+	docker push k3d-registry.localhost:5500/ngsa-app:local
 
 	# delete WebV
 	-kubectl delete -f deploy/webv --ignore-not-found=true
@@ -102,8 +102,8 @@ app :
 
 webv :
 	# build and push the local image
-	docker build ../webvalidate -t k3d-registry.localhost:5000/webv:local
-	docker push k3d-registry.localhost:5000/webv:local
+	docker build ../webvalidate -t k3d-registry.localhost:5500/webv:local
+	docker push k3d-registry.localhost:5500/webv:local
 	
 	# delete / create WebValidate
 	-kubectl delete -f deploy/webv --ignore-not-found=true
