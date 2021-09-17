@@ -101,6 +101,10 @@ make check
   - Wait for all pods to be in the `Running` state (look for the `STATUS` column)
   - Use the arrow key to select `nsga-memory` then press the `l` key to view logs from the pod
   - To go back, press the `esc` key
+  - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
+    - Hit the `ngsa-memory` NodePort from within the cluster by executing `http ngsa-memory:8080/version`
+    - Verify 200 status in the response
+    - To exit - `exit`
   - To view other deployed resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
   - To exit - `:q <enter>`
 
