@@ -18,6 +18,8 @@ You can run the `dev container` locally and you can also connect to the Codespac
 
 Please experiment and add any issues to the GitHub Discussion. We LOVE PRs!
 
+The motivation for creating and using Codespaces is highlighted by this [GitHub Blog Post](https://github.blog/2021-08-11-githubs-engineering-team-moved-codespaces/). "It eliminated the fragility and single-track model of local development environments, but it also gave us a powerful new point of leverage for improving GitHub’s developer experience."
+
 ## Create your repo
 
 > You must have access to Codespaces as an individual or part of a GitHub Team or GitHub Enterprise Cloud
