@@ -152,72 +152,53 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - Click `Execute`
   - This will display the `histogram` that Grafana uses for the charts
 
-## How We Exposed the Grafana Service
+## How to expose a Service via a NodePort
+
+> Note: you have to make the changes before you run `make all`
+
+### Forward the NodePort on Codespaces
 
 > Goal: The steps needed to make the Grafana dashboard accessible via a Codespaces forwarded port
-
-Forward the soon-to-be mapped port on Codespaces
 
 - Open `.devcontainer/devcontainer.json`
 - Add port 32000 to `forwardPorts`
 - Add the port label `"32000": { "label": "Grafana" }` to `portsAttributes`
-- Select green `Codespaces` on the bottom left-hand side of VSCode
-- Select `Rebuild Container` from the dropdown at the top of VSCode
-- Verify the addition of `Grafana (32000)` in the `Ports` tab of the Terminal view
+- Verify `Grafana (32000)` in the `Ports` tab of the Terminal view
 
-Set the NodePort on Grafana's deployed service
+### Set the NodePort on Grafana's deployed service
 
 - Open `deploy/grafana/deployment.yaml`
-- In the configs for `kind: service`, find `ports`
-- Add the `nodePort`, 32000
+- In the configs for `kind: service`, set the ports
+  - This example forwards local port 3000 to NodePort 32000
 
 ```yaml
+
   ports:
     - port: 3000
       targetPort: 3000
       nodePort: 32000
+
 ```
 
-Map the NodePort to a local port
+### Expose the NodePort from k3d to localhost
 
 - Open `deploy/k3d.yaml`
 - Under `ports` map nodePort 32000 to local port 32000
-
-```yaml
-ports:
-  - port: 32000:32000
-```
-
-- In the terminal, execute `kubectl get nodes`
-
-```bash
-// example output
-
-vscode ➜ /workspaces/kubernetes-in-codespaces (main) $ kubectl get nodes
-NAME                       STATUS   ROLES                  AGE   VERSION
-k3d-k3s-default-server-0   Ready    control-plane,master   13m   v1.21.3+k3s1
-```
-
 - Under `- port: 32000:32000` add the nodeFilter, `server[0]`
   - Explanation
-    - There was only one node, which has the Grafana pod
+    - There is only one node, which has the Grafana pod
     - That node in the cluster is server node 0 (aka server[0])
     - The node filter indicates which node to send traffic to
+    - For multi-node clusters, you have to update
 
 ```yaml
+
 ports:
   - port: 32000:32000
     nodeFilters:
       - server[0]
+
 ```
-
-Update Cluster with changes 
-**Do not run. For informational purposes.
-
-- Execute the following command in the terminal `make all`
-  - Restarts the cluster with the k3d config
-  - Restarts the grafana pod with configured nodePort
-- Verify changes by [Launch Grafana Dashboard](#launch-grafana-dashboard)
 
 ## Launch Grafana Dashboard
 
