@@ -35,12 +35,8 @@ Create your repo from this template and add your application code
 
 ## Open with Codespaces
 
-> Note this screen shot is a little out of date with the released version of Codespaces
->
-> We LOVE PRs ... :)
-
 - Click the `Code` button on your repo
-- Click `Open with Codespaces`
+- Click the `Codespaces` tab
 - Click `New Codespace`
 - Choose the `4 core` option
   - 2 core isn't enough to run everything well
@@ -400,7 +396,7 @@ rm -rf dapr-app
 - Team [Engineering Practices](.github/EngineeringPractices.md)
 - CSE Engineering Fundamentals [Playbook](https://github.com/Microsoft/code-with-engineering-playbook)
 
-## How to file issues and get help  
+## How to file issues and get help
 
 This project uses GitHub Issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates. For new issues, file your bug or feature request as a new issue.
 
