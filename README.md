@@ -44,6 +44,9 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 ## Build and Deploy a k3d Cluster
 
+- This will create a local Kubernetes cluster using k3d
+  - The cluster is running inside your Codespace
+
   ```bash
 
   # build the cluster
@@ -139,62 +142,13 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - Click `Execute`
   - This will display the `histogram` that Grafana uses for the charts
 
-## How to expose a Service via a NodePort
-
-> Note: you have to make the changes before you run `make all`
-
-### Forward the NodePort on Codespaces
-
-> Goal: The steps needed to make the Grafana dashboard accessible via a Codespaces forwarded port
-
-- Open `.devcontainer/devcontainer.json`
-- Add port 32000 to `forwardPorts`
-- Add the port label `"32000": { "label": "Grafana" }` to `portsAttributes`
-- Verify `Grafana (32000)` in the `Ports` tab of the Terminal view
-
-### Set the NodePort on Grafana's deployed service
-
-- Open `deploy/grafana/deployment.yaml`
-- In the configs for `kind: service`, set the ports
-  - This example forwards local port 3000 to NodePort 32000
-
-```yaml
-
-  ports:
-    - port: 3000
-      targetPort: 3000
-      nodePort: 32000
-
-```
-
-### Expose the NodePort from k3d to localhost
-
-- Open `deploy/k3d.yaml`
-- Under `ports` map nodePort 32000 to local port 32000
-- Under `- port: 32000:32000` add the nodeFilter, `server[0]`
-  - Explanation
-    - There is only one node, which has the Grafana pod
-    - That node in the cluster is server node 0 (aka server[0])
-    - The node filter indicates which node to send traffic to
-    - For multi-node clusters, you have to update
-
-```yaml
-
-ports:
-  - port: 32000:32000
-    nodeFilters:
-      - server[0]
-
-```
-
 ## Launch Grafana Dashboard
 
 - Grafana login info
   - admin
   - akdc-512
 
-- Once `make all` completes successfully
-  - Click on the `ports` tab of the terminal window
+- Click on the `ports` tab of the terminal window
   - Click on the `open in browser icon` on the Grafana port (32000)
   - This will open Grafana in a new browser tab
 
@@ -241,19 +195,6 @@ make load-test
 - Press `w` to Toggle Wrap
 - Review logs that will be sent to Log Analytics when configured
   - See `deploy/loganalytics` for directions
-
-## Build and deploy a local version of WebValidate
-
-- Switch back to your Codespaces tab
-
-```bash
-
-# from Codespaces terminal
-
-# make and deploy a local version of WebV to k8s
-make webv
-
-```
 
 ## Build and deploy a local version of ngsa-memory
 
