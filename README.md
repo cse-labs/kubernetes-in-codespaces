@@ -22,34 +22,23 @@ The motivation for creating and using Codespaces is highlighted by this [GitHub 
 
 Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast where he shared the GitHub journey to [Codespaces](https://changelog.com/podcast/459)
 
-## Create your repo
-
-> You must have access to Codespaces as an individual or part of a GitHub Team or GitHub Enterprise Cloud
->
-> If you are a member of this GitHub organization, you can skip this step and open with Codespaces
-
-Create your repo from this template and add your application code
-
-- Click the `Use this template` button
-- Enter your repo details
-
 ## Open with Codespaces
+
+> You must be a member of the Microsoft OSS and cse-labs GitHub organizations
+
+- Instructions for joining the GitHub orgs are [here](https://github.com/cse-labs/moss)
+  - If you don't see an `Open in Codespaces` option, you are not part of the organization(s)
 
 - Click the `Code` button on your repo
 - Click the `Codespaces` tab
 - Click `New Codespace`
 - Choose the `4 core` option
-  - 2 core isn't enough to run everything well
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
 ## Open Workspace
 
-> Important!
->
-> Another late change - wait until the Codespace is ready before opening the workspace
->
-> We LOVE PRs ... :)
+> Wait until the Codespace is ready before opening the workspace
 
 - When prompted, choose `Open Workspace`
 
