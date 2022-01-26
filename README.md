@@ -184,7 +184,7 @@ Adding labels to the ports
 - This will open Prometheus in a new browser tab
 
 - From the Prometheus tab
-  - Begin typing NgsaAppDuration_bucket in the `Expression` search
+  - Begin typing `NgsaAppDuration_bucket` in the `Expression` search
   - Click `Execute`
   - This will display the `histogram` that Grafana uses for the charts
 
