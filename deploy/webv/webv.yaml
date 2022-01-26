@@ -22,7 +22,7 @@ spec:
 
     args: 
     - --sleep
-    - "1000"
+    - "100"
     - --prometheus
     - --run-loop
     - --verbose
