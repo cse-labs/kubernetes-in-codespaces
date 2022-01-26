@@ -137,6 +137,46 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - Since the jumpbox is running `in` the cluster, we use the service name and port, not the NodePort
   - A jumpbox is great for debugging network issues
 
+## NodePorts
+
+- Codespaces exposes `ports` to the browser
+- We take advantage of this by exposing `NodePort` on most of our K8s services
+- Codespaces ports are setup in the `.devcontainer/devcontainer.json` file
+
+Exposing the ports
+
+```json
+
+// forward ports for the app
+"forwardPorts": [
+  3500,
+  5000,
+  9411,
+  30000,
+  30080,
+  30088,
+  32000
+],
+
+```
+
+Adding labels to the ports
+
+```json
+
+// add labels
+"portsAttributes": {
+  "3500": { "label": "dapr" },
+  "5000": { "label": "weather" },
+  "9411": { "label": "Zipkin" },
+  "30000": { "label": "Prometheus" },
+  "30080": { "label": "ngsa-app" },
+  "30088": { "label": "WebV" },
+  "32000": { "label": "Grafana" },
+},
+
+```
+
 ## View Prometheus Dashboard
 
 - Click on the `ports` tab of the terminal window
