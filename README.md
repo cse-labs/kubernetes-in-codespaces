@@ -73,10 +73,7 @@ monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
 
 ## Service endpoints
 
-- All endpoints are usable in your browser via clicking on the `Ports` tab
-  - Select the `open in browser icon` on the far right
-- Some popup blockers block the new browser tab
-- If you get a gateway error, just hit refresh - it will clear once the port-forward is ready
+- If you get a gateway error, just run the command again - it will clear once the services are ready
 
 ```bash
 
@@ -124,12 +121,21 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - `kubectl exec -it jumpbox -- bash -l`
     - note: -l causes a login and processes `.profile`
     - note: `sh -l` will work, but the results will not be displayed in the terminal due to a bug
+- example
+  - run `kj`
+    - Your terminal prompt will change
+    - From the `jumpbox` terminal
+    - Run `http ngsa-memory:8080/version`
+    - `exit` back to the Codespaces terminal
 
 - use the `kje` alias
   - `kubectl exec -it jumpbox --`
 - example
   - run http against the ClusterIP
     - `kje http ngsa-memory:8080/version`
+
+- Since the jumpbox is running `in` the cluster, we use the service name and port, not the NodePort
+  - A jumpbox is great for debugging network issues
 
 ## View Prometheus Dashboard
 
