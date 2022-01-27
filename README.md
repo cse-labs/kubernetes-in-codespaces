@@ -194,6 +194,20 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
   ```
 
+## View NGSA App
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the ngsa-app port (30080)
+- This will open the ngsa-app home page (Swagger) in a new browser tab
+
+## View Web Validate
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the WebV port (30088)
+- This will open the Web Validate in a new browser tab
+  - Note that you will get a 404 as WebV does not have a home page
+  - Add `version` or `metrics` to the end of the URL in the browser tab
+
 ## View Prometheus Dashboard
 
 - Click on the `ports` tab of the terminal window
@@ -205,7 +219,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - Click `Execute`
   - This will display the `histogram` that Grafana uses for the charts
 
-## Launch Grafana Dashboard
+## View Grafana Dashboard
 
 - Grafana login info
   - admin
@@ -221,13 +235,13 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ![Grafana](./images/ngsa-requests-by-mode.png)
 
-## Run a load test
+## Run integration and load tests
 
 ```bash
 
 # from Codespaces terminal
 
-# run a baseline test (will generate warnings in Grafana)
+# run an integration test (will generate warnings in Grafana)
 make test
 
 # run a 60 second load test
@@ -236,7 +250,7 @@ make load-test
 ```
 
 - Switch to the Grafana brower tab
-- The test will generate 400 / 404 results
+- The integration test generates 400 and 404 results by design
 - The requests metric will go from green to yellow to red as load increases
   - It may skip yellow
 - As the test completes
@@ -278,6 +292,7 @@ make load-test
   make app
 
   # check the app version
+  # the semver will have the current date and time
   http localhost:30080/version
 
   ```
@@ -285,6 +300,8 @@ make load-test
 ## Next Steps
 
 > [Makefile](./Makefile) is a good place to start exploring
+
+We use the `makefile` to encapsulate and document common tasks
 
 ## FAQ
 
