@@ -24,12 +24,12 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 ## Open with Codespaces
 
-> You must be a member of the Microsoft OSS and cse-labs GitHub organizations
+> You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
 
 - Instructions for joining the GitHub orgs are [here](https://github.com/cse-labs/moss)
   - If you don't see an `Open in Codespaces` option, you are not part of the organization(s)
 
-- Click the `Code` button on your repo
+- Click the `Code` button on this repo
 - Click the `Codespaces` tab
 - Click `New Codespace`
 - Choose the `4 core` option
@@ -54,26 +54,24 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
   ```
 
+- Output from `make all` should resemble this
+
+  ```text
+
+  default      jumpbox                                   1/1   Running   0   25s
+  default      ngsa-memory                               1/1   Running   0   33s
+  default      webv                                      1/1   Running   0   31s
+  logging      fluentbit                                 1/1   Running   0   31s
+  monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
+  monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
+
+  ```
+
 ![Running Codespace](./images/RunningCodespace.png)
 
 ## Validate Deployment
 
-Output from `make all` should resemble this
-
-```text
-
-default      jumpbox                                   1/1   Running   0   25s
-default      ngsa-memory                               1/1   Running   0   33s
-default      webv                                      1/1   Running   0   31s
-logging      fluentbit                                 1/1   Running   0   31s
-monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
-monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
-
-```
-
-## Service endpoints
-
-- If you get a gateway error, just run the command again - it will clear once the services are ready
+- If you get an error, just run the command again - it will clear once the services are ready
 
 ```bash
 
@@ -143,39 +141,39 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - We take advantage of this by exposing `NodePort` on most of our K8s services
 - Codespaces ports are setup in the `.devcontainer/devcontainer.json` file
 
-Exposing the ports
+- Exposing the ports
 
-```json
+  ```json
 
-// forward ports for the app
-"forwardPorts": [
-  3500,
-  5000,
-  9411,
-  30000,
-  30080,
-  30088,
-  32000
-],
+  // forward ports for the app
+  "forwardPorts": [
+    3500,
+    5000,
+    9411,
+    30000,
+    30080,
+    30088,
+    32000
+  ],
 
-```
+  ```
 
-Adding labels to the ports
+- Adding labels to the ports
 
-```json
+  ```json
 
-// add labels
-"portsAttributes": {
-  "3500": { "label": "dapr" },
-  "5000": { "label": "weather" },
-  "9411": { "label": "Zipkin" },
-  "30000": { "label": "Prometheus" },
-  "30080": { "label": "ngsa-app" },
-  "30088": { "label": "WebV" },
-  "32000": { "label": "Grafana" },
-},
+  // add labels
+  "portsAttributes": {
+    "3500": { "label": "Dapr" },
+    "5000": { "label": "weather" },
+    "9411": { "label": "Zipkin" },
+    "30000": { "label": "Prometheus" },
+    "30080": { "label": "ngsa-app" },
+    "30088": { "label": "WebV" },
+    "32000": { "label": "Grafana" },
+  },
 
-```
+  ```
 
 ## View Prometheus Dashboard
 
@@ -200,10 +198,7 @@ Adding labels to the ports
 
 ![Codespace Ports](./images/CodespacePorts.jpg)
 
-## View Grafana Dashboard
-
-- Click on `Home` at the top of the page
-- From the dashboards page, click on `NGSA`
+## Grafana Dashboard
 
 ![Grafana](./images/ngsa-requests-by-mode.png)
 
@@ -226,12 +221,16 @@ make load-test
 - The requests metric will go from green to yellow to red as load increases
   - It may skip yellow
 - As the test completes
-  - The metric will go back to green (1.0)
+  - The metric will go back to green (10 req/sec)
   - The request graph will return to normal
 
 ![Load Test](./images/test-with-errors-and-load-test.png)
 
 ## View Fluent Bit Logs
+
+> Fluent Bit is set to forward logs to stdout for debugging
+>
+> Fluent Bit can be configured to forward to different services including Azure Log Analytics
 
 - Start `k9s` from the Codespace terminal
 - Press `0` to show all `namespaces`
@@ -246,24 +245,24 @@ make load-test
 
 - Switch back to your Codespaces tab
 
-```bash
+  ```bash
 
-# from Codespaces terminal
+  # from Codespaces terminal
 
-# make and deploy a local version of ngsa-memory to k8s
-make app
+  # make and deploy a local version of ngsa-memory to k8s
+  make app
 
-```
+  ```
 
 ## Next Steps
 
 > [Makefile](./Makefile) is a good place to start exploring
 
-## dapr Lab
+## Dapr Lab
 
-> make sure you are in the root of the repo
+> Make sure you are in the root of the repo
 
-### Create and run a Web API app with dapr
+### Create and run a Web API app with Dapr
 
 Create a new dotnet webapi project
 
@@ -275,7 +274,7 @@ dotnet new webapi --no-https
 
 ```
 
-Run the app with dapr
+Run the app with Dapr
 
 ```bash
 
@@ -294,7 +293,7 @@ Open Zipkin
 - Click on the `Ports` tab
   - Open the `Zipkin` link
   - Click on `Run Query`
-    - Explore the traces generated automatically with dapr
+    - Explore the traces generated automatically with Dapr
 
 Stop the app by pressing `ctl-c`
 
@@ -307,7 +306,7 @@ rm -rf dapr-app
 
 ```
 
-### Add dapr SDK to the weather app
+### Add Dapr SDK to the weather app
 
 > Changes to the app have already been made and are detailed below
 
@@ -332,12 +331,12 @@ rm -rf dapr-app
     - Retrieved the model from the `State Store`
   - Set a breakpoint on lines 30 and 38
 
-### Run the dapr weather app
+### Run the Dapr weather app
 
 - Click on one of the VS Code panels to make sure it has the focus, then Press `F5` to run
 - Alternatively, you can use the `hamburger` menu, then `Run` and `Start Debugging`
 - Open `dapr.http`
-  - Send a message via dapr
+  - Send a message via Dapr
     - Click on `Send Request` under `post to dapr`
     - Click `continue` when you hit the breakpoint
     - 200 OK
