@@ -40,7 +40,16 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 > Wait until the Codespace is ready before opening the workspace
 
-- When prompted, choose `Open Workspace`
+- When prompted, do not `Open Workspace`
+
+- Once setup is complete, open the workspace
+  - Click the `hamburger` menu
+  - Click `File`
+  - Click `Open Workspace from file`
+  - Select `cse-labs.code-workspace`
+  - Click `OK`
+- Your screen will reload
+  - You may have to click on the terminal tab once Codespaces reloads
 
 ## Build and Deploy a k3d Cluster
 
