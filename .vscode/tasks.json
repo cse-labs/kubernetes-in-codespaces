@@ -37,18 +37,6 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
-        },
-        {
-            "appId": "myapp",
-            "appPort": 5000,
-            "label": "daprd-debug",
-            "type": "daprd",
-            "dependsOn": "build"
-        },
-        {
-            "appId": "myapp",
-            "label": "daprd-down",
-            "type": "daprd-down"
         }
     ]
 }
