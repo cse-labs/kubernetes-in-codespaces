@@ -264,6 +264,12 @@ make load-test
 
 ## Build and deploy a local version of ngsa-memory
 
+- We have a local Docker container registry running in the Codespace
+  - Run `docker ps` to see the running images
+- Build the WebAPI app from the local source code
+- Push to the local Docker registry
+- Deploy to local k3d cluster
+
 - Switch back to your Codespaces tab
 
   ```bash
@@ -272,6 +278,9 @@ make load-test
 
   # make and deploy a local version of ngsa-memory to k8s
   make app
+
+  # check the app version
+  http localhost:30080/version
 
   ```
 
