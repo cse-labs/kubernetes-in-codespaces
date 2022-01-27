@@ -45,10 +45,23 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   - Click `File`
   - Click `Open Workspace from file`
   - Click `workspaces`
-  - Select `cse-labs.code-workspace`
-  - Click `OK`
+  - Click `cse-labs.code-workspace`
 - Your screen will reload
   - You may have to click on the terminal tab once Codespaces reloads
+
+## Stopping a Codespace
+
+- Codespaces will shutdown automatically after 30 minutes of non-use
+- To shutdown a codespace immediately
+  - Click `Codespaces` in the lower left of the browser window
+  - Choose `Stop Current Codespace` from the context menu
+
+- You can also rebuild the container that is running your Codespace
+  - Any changes in `/workspaces` will be retained
+  - Other directories will be reset
+  - Click `Codespaces` in the lower left of the browser window
+  - Choose `Rebuild Container` from the context menu
+  - Confirm your choice
 
 ## Build and Deploy a k3d Cluster
 
