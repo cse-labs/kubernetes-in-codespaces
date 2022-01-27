@@ -46,6 +46,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   - Click the `hamburger` menu
   - Click `File`
   - Click `Open Workspace from file`
+  - Click `workspaces`
   - Select `cse-labs.code-workspace`
   - Click `OK`
 - Your screen will reload
