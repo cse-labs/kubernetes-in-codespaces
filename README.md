@@ -63,6 +63,10 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   - Choose `Rebuild Container` from the context menu
   - Confirm your choice
 
+- To delete a Codespace
+  - <https://github.com/codespaces>
+  - Use the context menu to delete the Codespace
+
 ## Build and Deploy a k3d Cluster
 
 - This will create a local Kubernetes cluster using k3d
