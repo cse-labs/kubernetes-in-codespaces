@@ -192,7 +192,7 @@ Adding labels to the ports
 
 - Grafana login info
   - admin
-  - akdc-512
+  - cse-labs
 
 - Click on the `ports` tab of the terminal window
   - Click on the `open in browser icon` on the Grafana port (32000)
