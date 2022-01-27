@@ -40,8 +40,6 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 > Wait until the Codespace is ready before opening the workspace
 
-- When prompted, do not `Open Workspace`
-
 - Once setup is complete, open the workspace
   - Click the `hamburger` menu
   - Click `File`
