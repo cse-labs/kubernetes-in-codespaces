@@ -5,10 +5,6 @@
 			"path": ".."
 		},
 		{
-			"name": "components",
-			"path": "/home/vscode/.dapr/components"
-		},
-		{
 			"name": "webv",
 			"path": "../../webvalidate"
 		},

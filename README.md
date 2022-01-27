@@ -172,9 +172,6 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
   // forward ports for the app
   "forwardPorts": [
-    3500,
-    5000,
-    9411,
     30000,
     30080,
     30088,
@@ -189,9 +186,6 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
   // add labels
   "portsAttributes": {
-    "3500": { "label": "Dapr" },
-    "5000": { "label": "weather" },
-    "9411": { "label": "Zipkin" },
     "30000": { "label": "Prometheus" },
     "30080": { "label": "ngsa-app" },
     "30088": { "label": "WebV" },
@@ -291,94 +285,6 @@ make load-test
 ## Next Steps
 
 > [Makefile](./Makefile) is a good place to start exploring
-
-## Dapr Lab
-
-> Make sure you are in the root of the repo
-
-### Create and run a Web API app with Dapr
-
-Create a new dotnet webapi project
-
-```bash
-
-mkdir -p dapr-app
-cd dapr-app
-dotnet new webapi --no-https
-
-```
-
-Run the app with Dapr
-
-```bash
-
-dapr run -a myapp -p 5000 -H 3500 -- dotnet run
-
-```
-
-Check the endpoints
-
-- open `dapr.http`
-  - click on the `dotnet app` `send request` link
-  - click on the `dapr endpoint` `send request` link
-
-Open Zipkin
-
-- Click on the `Ports` tab
-  - Open the `Zipkin` link
-  - Click on `Run Query`
-    - Explore the traces generated automatically with Dapr
-
-Stop the app by pressing `ctl-c`
-
-Clean up
-
-```bash
-
-cd ..
-rm -rf dapr-app
-
-```
-
-### Add Dapr SDK to the weather app
-
-> Changes to the app have already been made and are detailed below
-
-- Open `.vscode/launch.json`
-  - Added `.NET Core Launch (web) with Dapr` configuration
-- Open `.vscode/task.json`
-  - Added `daprd-debug` and `daprd-down` tasks
-- Open `weather/weather.csproj`
-  - Added `dapr.aspnetcore` package reference
-- Open `weather/Startup.cs`
-  - Injected dapr into the services
-    - Line 29 `services.AddControllers().AddDapr()`
-  - Added `Cloud Events`
-    - Line 40 `app.UseCloudEvents()`
-- Open `weather/Controllers/WeatherForecastController.cs`
-  - `PostWeatherForecast` is a new function for `sending` pub-sub events
-    - Added the `Dapr.Topic` attribute
-    - Got the `daprClient` via Dependency Injection
-    - Published the model to the `State Store`
-  - `Get`
-    - Added the `daprClient` via Dependency Injection
-    - Retrieved the model from the `State Store`
-  - Set a breakpoint on lines 30 and 38
-
-### Run the Dapr weather app
-
-- Click on one of the VS Code panels to make sure it has the focus, then Press `F5` to run
-- Alternatively, you can use the `hamburger` menu, then `Run` and `Start Debugging`
-- Open `dapr.http`
-  - Send a message via Dapr
-    - Click on `Send Request` under `post to dapr`
-    - Click `continue` when you hit the breakpoint
-    - 200 OK
-  - Get the model from the `State Store`
-    - Click on `Send Request` under `dapr endpoint`
-    - Click `continue` when you hit the breakpoint
-    - Verify the value from the POST request appears
-  - Change the `temperatureC` value in POST request and repeat
 
 ## FAQ
 
