@@ -21,9 +21,6 @@
 	
 	// forward ports for the app
 	"forwardPorts": [
-		3500,
-		5000,
-		9411,
 		30000,
 		30080,
 		30088,
@@ -32,9 +29,6 @@
 
 	// add labels
 	"portsAttributes": {
-		"3500": { "label": "dapr" },
-		"5000": { "label": "weather" },
-		"9411": { "label": "Zipkin" },
 		"30000": { "label": "Prometheus" },
 		"30080": { "label": "ngsa-app" },
 		"30088": { "label": "WebV" },
@@ -45,7 +39,6 @@
 	"extensions": [
 		"ms-dotnettools.csharp",
 		"ms-azuretools.vscode-docker",
-		"ms-azuretools.vscode-dapr",
 		"ms-kubernetes-tools.vscode-kubernetes-tools",
 		"davidanson.vscode-markdownlint",
 		"gruntfuggly.todo-tree",

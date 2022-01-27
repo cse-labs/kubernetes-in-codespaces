@@ -22,38 +22,55 @@ The motivation for creating and using Codespaces is highlighted by this [GitHub 
 
 Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast where he shared the GitHub journey to [Codespaces](https://changelog.com/podcast/459)
 
-## Create your repo
-
-> You must have access to Codespaces as an individual or part of a GitHub Team or GitHub Enterprise Cloud
->
-> If you are a member of this GitHub organization, you can skip this step and open with Codespaces
-
-Create your repo from this template and add your application code
-
-- Click the `Use this template` button
-- Enter your repo details
-
 ## Open with Codespaces
 
-- Click the `Code` button on your repo
+> You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
+
+- Instructions for joining the GitHub orgs are [here](https://github.com/cse-labs/moss)
+  - If you don't see an `Open in Codespaces` option, you are not part of the organization(s)
+
+- Click the `Code` button on this repo
 - Click the `Codespaces` tab
 - Click `New Codespace`
 - Choose the `4 core` option
-  - 2 core isn't enough to run everything well
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
 ## Open Workspace
 
-> Important!
->
-> Another late change - wait until the Codespace is ready before opening the workspace
->
-> We LOVE PRs ... :)
+> Wait until the Codespace is ready before opening the workspace
 
-- When prompted, choose `Open Workspace`
+- Once setup is complete, open the workspace
+  - Click the `hamburger` menu
+  - Click `File`
+  - Click `Open Workspace from file`
+  - Click `workspaces`
+  - Click `cse-labs.code-workspace`
+- Your screen will reload
+  - You may have to click on the terminal tab once Codespaces reloads
+
+## Stopping a Codespace
+
+- Codespaces will shutdown automatically after 30 minutes of non-use
+- To shutdown a codespace immediately
+  - Click `Codespaces` in the lower left of the browser window
+  - Choose `Stop Current Codespace` from the context menu
+
+- You can also rebuild the container that is running your Codespace
+  - Any changes in `/workspaces` will be retained
+  - Other directories will be reset
+  - Click `Codespaces` in the lower left of the browser window
+  - Choose `Rebuild Container` from the context menu
+  - Confirm your choice
+
+- To delete a Codespace
+  - <https://github.com/codespaces>
+  - Use the context menu to delete the Codespace
 
 ## Build and Deploy a k3d Cluster
+
+- This will create a local Kubernetes cluster using k3d
+  - The cluster is running inside your Codespace
 
   ```bash
 
@@ -62,29 +79,24 @@ Create your repo from this template and add your application code
 
   ```
 
+- Output from `make all` should resemble this
+
+  ```text
+
+  default      jumpbox                                   1/1   Running   0   25s
+  default      ngsa-memory                               1/1   Running   0   33s
+  default      webv                                      1/1   Running   0   31s
+  logging      fluentbit                                 1/1   Running   0   31s
+  monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
+  monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
+
+  ```
+
 ![Running Codespace](./images/RunningCodespace.png)
 
 ## Validate Deployment
 
-Output from `make all` should resemble this
-
-```text
-
-default      jumpbox                                   1/1   Running   0   25s
-default      ngsa-memory                               1/1   Running   0   33s
-default      webv                                      1/1   Running   0   31s
-logging      fluentbit                                 1/1   Running   0   31s
-monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
-monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
-
-```
-
-## Service endpoints
-
-- All endpoints are usable in your browser via clicking on the `Ports` tab
-  - Select the `open in browser icon` on the far right
-- Some popup blockers block the new browser tab
-- If you get a gateway error, just hit refresh - it will clear once the port-forward is ready
+- If you get an error, just run the command again - it will clear once the services are ready
 
 ```bash
 
@@ -132,12 +144,69 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - `kubectl exec -it jumpbox -- bash -l`
     - note: -l causes a login and processes `.profile`
     - note: `sh -l` will work, but the results will not be displayed in the terminal due to a bug
+- example
+  - run `kj`
+    - Your terminal prompt will change
+    - From the `jumpbox` terminal
+    - Run `http ngsa-memory:8080/version`
+    - `exit` back to the Codespaces terminal
 
 - use the `kje` alias
   - `kubectl exec -it jumpbox --`
 - example
   - run http against the ClusterIP
     - `kje http ngsa-memory:8080/version`
+
+- Since the jumpbox is running `in` the cluster, we use the service name and port, not the NodePort
+  - A jumpbox is great for debugging network issues
+
+## NodePorts
+
+- Codespaces exposes `ports` to the browser
+- We take advantage of this by exposing `NodePort` on most of our K8s services
+- Codespaces ports are setup in the `.devcontainer/devcontainer.json` file
+
+- Exposing the ports
+
+  ```json
+
+  // forward ports for the app
+  "forwardPorts": [
+    30000,
+    30080,
+    30088,
+    32000
+  ],
+
+  ```
+
+- Adding labels to the ports
+
+  ```json
+
+  // add labels
+  "portsAttributes": {
+    "30000": { "label": "Prometheus" },
+    "30080": { "label": "ngsa-app" },
+    "30088": { "label": "WebV" },
+    "32000": { "label": "Grafana" },
+  },
+
+  ```
+
+## View NGSA App
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the ngsa-app port (30080)
+- This will open the ngsa-app home page (Swagger) in a new browser tab
+
+## View Web Validate
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the WebV port (30088)
+- This will open the Web Validate in a new browser tab
+  - Note that you will get a 404 as WebV does not have a home page
+  - Add `version` or `metrics` to the end of the URL in the browser tab
 
 ## View Prometheus Dashboard
 
@@ -146,85 +215,33 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - This will open Prometheus in a new browser tab
 
 - From the Prometheus tab
-  - Begin typing NgsaAppDuration_bucket in the `Expression` search
+  - Begin typing `NgsaAppDuration_bucket` in the `Expression` search
   - Click `Execute`
   - This will display the `histogram` that Grafana uses for the charts
 
-## How to expose a Service via a NodePort
-
-> Note: you have to make the changes before you run `make all`
-
-### Forward the NodePort on Codespaces
-
-> Goal: The steps needed to make the Grafana dashboard accessible via a Codespaces forwarded port
-
-- Open `.devcontainer/devcontainer.json`
-- Add port 32000 to `forwardPorts`
-- Add the port label `"32000": { "label": "Grafana" }` to `portsAttributes`
-- Verify `Grafana (32000)` in the `Ports` tab of the Terminal view
-
-### Set the NodePort on Grafana's deployed service
-
-- Open `deploy/grafana/deployment.yaml`
-- In the configs for `kind: service`, set the ports
-  - This example forwards local port 3000 to NodePort 32000
-
-```yaml
-
-  ports:
-    - port: 3000
-      targetPort: 3000
-      nodePort: 32000
-
-```
-
-### Expose the NodePort from k3d to localhost
-
-- Open `deploy/k3d.yaml`
-- Under `ports` map nodePort 32000 to local port 32000
-- Under `- port: 32000:32000` add the nodeFilter, `server[0]`
-  - Explanation
-    - There is only one node, which has the Grafana pod
-    - That node in the cluster is server node 0 (aka server[0])
-    - The node filter indicates which node to send traffic to
-    - For multi-node clusters, you have to update
-
-```yaml
-
-ports:
-  - port: 32000:32000
-    nodeFilters:
-      - server[0]
-
-```
-
-## Launch Grafana Dashboard
+## View Grafana Dashboard
 
 - Grafana login info
   - admin
-  - akdc-512
+  - cse-labs
 
-- Once `make all` completes successfully
-  - Click on the `ports` tab of the terminal window
+- Click on the `ports` tab of the terminal window
   - Click on the `open in browser icon` on the Grafana port (32000)
   - This will open Grafana in a new browser tab
 
 ![Codespace Ports](./images/CodespacePorts.jpg)
 
-## View Grafana Dashboard
-
-- Click on `Home` at the top of the page
-- From the dashboards page, click on `NGSA`
+## Grafana Dashboard
 
 ![Grafana](./images/ngsa-requests-by-mode.png)
 
-## Run a load test
+## Run integration and load tests
 
 ```bash
 
 # from Codespaces terminal
 
-# run a baseline test (will generate warnings in Grafana)
+# run an integration test (will generate warnings in Grafana)
 make test
 
 # run a 60 second load test
@@ -233,16 +250,20 @@ make load-test
 ```
 
 - Switch to the Grafana brower tab
-- The test will generate 400 / 404 results
+- The integration test generates 400 and 404 results by design
 - The requests metric will go from green to yellow to red as load increases
   - It may skip yellow
 - As the test completes
-  - The metric will go back to green (1.0)
+  - The metric will go back to green (10 req/sec)
   - The request graph will return to normal
 
 ![Load Test](./images/test-with-errors-and-load-test.png)
 
 ## View Fluent Bit Logs
+
+> Fluent Bit is set to forward logs to stdout for debugging
+>
+> Fluent Bit can be configured to forward to different services including Azure Log Analytics
 
 - Start `k9s` from the Codespace terminal
 - Press `0` to show all `namespaces`
@@ -253,123 +274,34 @@ make load-test
 - Review logs that will be sent to Log Analytics when configured
   - See `deploy/loganalytics` for directions
 
-## Build and deploy a local version of WebValidate
-
-- Switch back to your Codespaces tab
-
-```bash
-
-# from Codespaces terminal
-
-# make and deploy a local version of WebV to k8s
-make webv
-
-```
-
 ## Build and deploy a local version of ngsa-memory
 
+- We have a local Docker container registry running in the Codespace
+  - Run `docker ps` to see the running images
+- Build the WebAPI app from the local source code
+- Push to the local Docker registry
+- Deploy to local k3d cluster
+
 - Switch back to your Codespaces tab
 
-```bash
+  ```bash
 
-# from Codespaces terminal
+  # from Codespaces terminal
 
-# make and deploy a local version of ngsa-memory to k8s
-make app
+  # make and deploy a local version of ngsa-memory to k8s
+  make app
 
-```
+  # check the app version
+  # the semver will have the current date and time
+  http localhost:30080/version
+
+  ```
 
 ## Next Steps
 
 > [Makefile](./Makefile) is a good place to start exploring
 
-## dapr Lab
-
-> make sure you are in the root of the repo
-
-### Create and run a Web API app with dapr
-
-Create a new dotnet webapi project
-
-```bash
-
-mkdir -p dapr-app
-cd dapr-app
-dotnet new webapi --no-https
-
-```
-
-Run the app with dapr
-
-```bash
-
-dapr run -a myapp -p 5000 -H 3500 -- dotnet run
-
-```
-
-Check the endpoints
-
-- open `dapr.http`
-  - click on the `dotnet app` `send request` link
-  - click on the `dapr endpoint` `send request` link
-
-Open Zipkin
-
-- Click on the `Ports` tab
-  - Open the `Zipkin` link
-  - Click on `Run Query`
-    - Explore the traces generated automatically with dapr
-
-Stop the app by pressing `ctl-c`
-
-Clean up
-
-```bash
-
-cd ..
-rm -rf dapr-app
-
-```
-
-### Add dapr SDK to the weather app
-
-> Changes to the app have already been made and are detailed below
-
-- Open `.vscode/launch.json`
-  - Added `.NET Core Launch (web) with Dapr` configuration
-- Open `.vscode/task.json`
-  - Added `daprd-debug` and `daprd-down` tasks
-- Open `weather/weather.csproj`
-  - Added `dapr.aspnetcore` package reference
-- Open `weather/Startup.cs`
-  - Injected dapr into the services
-    - Line 29 `services.AddControllers().AddDapr()`
-  - Added `Cloud Events`
-    - Line 40 `app.UseCloudEvents()`
-- Open `weather/Controllers/WeatherForecastController.cs`
-  - `PostWeatherForecast` is a new function for `sending` pub-sub events
-    - Added the `Dapr.Topic` attribute
-    - Got the `daprClient` via Dependency Injection
-    - Published the model to the `State Store`
-  - `Get`
-    - Added the `daprClient` via Dependency Injection
-    - Retrieved the model from the `State Store`
-  - Set a breakpoint on lines 30 and 38
-
-### Run the dapr weather app
-
-- Click on one of the VS Code panels to make sure it has the focus, then Press `F5` to run
-- Alternatively, you can use the `hamburger` menu, then `Run` and `Start Debugging`
-- Open `dapr.http`
-  - Send a message via dapr
-    - Click on `Send Request` under `post to dapr`
-    - Click `continue` when you hit the breakpoint
-    - 200 OK
-  - Get the model from the `State Store`
-    - Click on `Send Request` under `dapr endpoint`
-    - Click `continue` when you hit the breakpoint
-    - Verify the value from the POST request appears
-  - Change the `temperatureC` value in POST request and repeat
+We use the `makefile` to encapsulate and document common tasks
 
 ## FAQ
 
