@@ -116,7 +116,8 @@ webv :
 
 test :
 	# use WebValidate to run a test
-	cd webv && webv --verbose --summary tsv --server http://localhost:30080 --files baseline.json
+	cd webv && webv --verbose --summary tsv --server http://localhost:30080 --files baseline.json baseline.json baseline.json
+	@echo
 	# the 400 and 404 results are expected
 	# Errors and ValidationErrorCount should both be 0
 
