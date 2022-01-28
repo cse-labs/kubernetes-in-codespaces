@@ -208,6 +208,29 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - Note that you will get a 404 as WebV does not have a home page
   - Add `version` or `metrics` to the end of the URL in the browser tab
 
+## Build and deploy a local version of ngsa-memory
+
+- We have a local Docker container registry running in the Codespace
+  - Run `docker ps` to see the running images
+- Build the WebAPI app from the local source code
+- Push to the local Docker registry
+- Deploy to local k3d cluster
+
+- Switch back to your Codespaces tab
+
+  ```bash
+
+  # from Codespaces terminal
+
+  # make and deploy a local version of ngsa-memory to k8s
+  make app
+
+  # check the app version
+  # the semver will have the current date and time
+  http localhost:30080/version
+
+  ```
+  
 ## View Prometheus Dashboard
 
 - Click on the `ports` tab of the terminal window
@@ -273,29 +296,6 @@ make load-test
 - Press `w` to Toggle Wrap
 - Review logs that will be sent to Log Analytics when configured
   - See `deploy/loganalytics` for directions
-
-## Build and deploy a local version of ngsa-memory
-
-- We have a local Docker container registry running in the Codespace
-  - Run `docker ps` to see the running images
-- Build the WebAPI app from the local source code
-- Push to the local Docker registry
-- Deploy to local k3d cluster
-
-- Switch back to your Codespaces tab
-
-  ```bash
-
-  # from Codespaces terminal
-
-  # make and deploy a local version of ngsa-memory to k8s
-  make app
-
-  # check the app version
-  # the semver will have the current date and time
-  http localhost:30080/version
-
-  ```
 
 ## Next Steps
 
