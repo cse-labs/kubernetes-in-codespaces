@@ -131,3 +131,6 @@ jumpbox :
 
 	@kubectl run jumpbox --image=ghcr.io/cse-labs/jumpbox --restart=Always
 	@kubectl wait pod jumpbox --for condition=ready --timeout=30s
+
+	@# display pod status
+	@kubectl get po -A | grep "default\|monitoring\|logging"
