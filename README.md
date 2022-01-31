@@ -315,7 +315,7 @@ Codespaces extends the use of development containers by providing a remote hosti
 
 **.devcontainer** folder contains the following:
 
-- **devcontainer.json**: This configuration file determines the environment of every new codespace anyone creates for your repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
+- **devcontainer.json**: This configuration file determines the environment of every new codespace anyone creates for repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
 
 - **Dockerfile**: You can add a Dockerfile to your project to define a container image and install software. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
 
