@@ -297,32 +297,32 @@ make load-test
 - Review logs that will be sent to Log Analytics when configured
   - See `deploy/loganalytics` for directions
 
-## How Codespaces is built?
+## How Codespaces is built
 
-A development container is a fully-featured development environment running in a container. The development container is a Docker container running locally or remotely that, at a high-level, contains the following:
+Codespaces extends the use of development containers by providing a remote hosting environment for them. A development container is a fully-featured development environment running in a container.
 
-- All the application dependencies - Defined in a Docker image, Dockerfile or docker-compose file and potentially updated via scripts called by well-defined hooks.
-- The application code - mounted, copied or cloned into the container
-- Visual Studio Code Server - configured with the appropriate Visual Studio Code Extensions required to develop
-  
-Codespaces extends the use of development containers by providing a remote hosting environment for them. Developers can simply click on a button in GitHub to open a Codespace for the repo. Behind the scenes, GitHub Codespaces is:
+Developers can simply click on a button in GitHub to open a Codespace for the repo. Behind the scenes, GitHub Codespaces is:
 
 - Spinning up a VM
 - Shallow cloning the repo in that VM. The shallow clone pulls the `devcontainer.json` onto the VM
 - Spins up the development container on the VM
 - Clones the repository in the development container
-- Connects you to the remotely hosted development container  via the browser or GitHub
+- Connects you to the remotely hosted development container via the browser or GitHub
 
-**.devcontainer** folder contains the following:
+`.devcontainer` folder contains the following:
 
-- **devcontainer.json**: This configuration file determines the environment of every new codespace anyone creates for repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
+- `devcontainer.json`: This configuration file determines the environment of every new codespace anyone creates for repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
 
-- **Dockerfile**: You can add a Dockerfile to your project to define a container image and install software. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
+- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by dasignating it to `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
 
-- **Bash scripts**: These scripts are the hooks that allow you to run commands at different points in the development container lifecycle which include:
+- `Bash scripts`: These scripts have to be placed under a `.devcontainer` folder at the root. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
   - onCreateCommand - Run when creating the container
   - postCreateCommand - Run inside the container after it is created
   - postStartCommand - Run every time the container starts
+
+  For more information on using LifyCycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
+
+  > Note: Provide executable permissions to scripts using: `chmod+ x`.
 
 ## Next Steps
 
