@@ -10,6 +10,7 @@ echo "post-create start" >> ~/status
 #sudo apt-get autoremove -y
 #sudo apt-get clean -y
 
-# add your commands here
+dotnet restore /workspaces/webvalidate/src/webvalidate.sln
+dotnet restore /workspaces/ngsa-app/Ngsa.App.csproj
 
 echo "post-create complete" >> ~/status
