@@ -8,6 +8,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -57,12 +63,12 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.6",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -72,7 +78,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(NgsaAppDuration_bucket[1m])) by (mode)",
+          "exemplar": true,
+          "expr": "sum(rate(NgsaAppDuration_count[1m])) by (mode)",
           "interval": "",
           "legendFormat": "{{category}}",
           "refId": "A"
@@ -133,11 +140,13 @@
           "decimals": 1,
           "mappings": [
             {
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
             }
           ],
           "noValue": "0",
@@ -187,10 +196,11 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
-          "expr": "sum(rate(NgsaAppDuration_count{mode != \"Metrics\"}[1m]))",
+          "exemplar": true,
+          "expr": "sum(rate(NgsaAppDuration_count[1m]))",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -214,11 +224,13 @@
           "decimals": 1,
           "mappings": [
             {
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
             }
           ],
           "thresholds": {
@@ -267,9 +279,10 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
+          "exemplar": true,
           "expr": "sum(rate(WebVDuration_count[1m]))",
           "instant": false,
           "interval": "",
@@ -297,10 +310,6 @@
       "dataFormat": "tsbuckets",
       "datasource": "prometheus",
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 14,
         "w": 10,
@@ -308,7 +317,7 @@
         "y": 2
       },
       "heatmap": {},
-      "hideZeroBuckets": false,
+      "hideZeroBuckets": true,
       "highlightCards": true,
       "id": 8,
       "legend": {
@@ -317,6 +326,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
+          "exemplar": true,
           "expr": "sum(increase(NgsaAppDuration_bucket[1m])) by (le)",
           "format": "heatmap",
           "instant": false,
@@ -379,8 +389,8 @@
         "alignAsTable": false,
         "avg": false,
         "current": false,
-        "hideEmpty": true,
-        "hideZero": true,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": false,
         "min": false,
         "rightSide": true,
@@ -390,12 +400,12 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.6",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -406,7 +416,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(rate(NgsaAppDuration_bucket{code != \"OK\"}[1m])) by (mode)",
+          "expr": "sum(rate(NgsaAppDuration_count{code != \"OK\"}[1m])) by (mode)",
           "interval": "",
           "legendFormat": "{{category}}",
           "refId": "A"
@@ -457,7 +467,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -482,5 +492,5 @@
   "timezone": "",
   "title": "ngsa",
   "uid": "ngsa",
-  "version": 2
+  "version": 3
 }
