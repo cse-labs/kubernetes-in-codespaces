@@ -413,7 +413,7 @@
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
+          "displayMode": "list",
           "placement": "right"
         },
         "tooltip": {
@@ -436,7 +436,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
@@ -459,8 +459,8 @@
       "1h"
     ]
   },
-  "timezone": "",
+  "timezone": "browser",
   "title": "ngsa",
   "uid": "ngsa",
-  "version": 8
+  "version": 9
 }
