@@ -307,7 +307,7 @@ Developers can simply click on a button in GitHub to open a Codespace for the re
 - Shallow cloning the repo in that VM. The shallow clone pulls the `devcontainer.json` onto the VM
 - Spins up the development container on the VM
 - Clones the repository in the development container
-- Connects you to the remotely hosted development container via the browser or GitHub
+- Connects you to the remotely hosted development container via the browser or Visual Studio Code
 
 `.devcontainer` folder contains the following:
 
