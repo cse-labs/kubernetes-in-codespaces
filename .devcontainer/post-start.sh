@@ -5,8 +5,8 @@ echo "post-start start" >> ~/status
 # this runs each time the container starts
 
 # update the repos
-git pull -C /workspaces/ngsa-app
-git pull -C /workspaces/webvalidate
+#git pull -C /workspaces/ngsa-app
+#git pull -C /workspaces/webvalidate
 
 # update the base docker images
 #docker pull mcr.microsoft.com/dotnet/sdk:5.0-alpine
