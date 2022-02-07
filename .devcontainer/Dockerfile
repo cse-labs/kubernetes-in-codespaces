@@ -5,3 +5,5 @@ FROM ghcr.io/cse-labs/k3d:latest
 
 # some images require specific values
 ARG USERNAME=vscode
+
+RUN echo "$(date)    docker build complete" >> /home/$USERNAME/status

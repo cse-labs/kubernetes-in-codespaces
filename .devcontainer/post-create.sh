@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this runs at Codespace creation - not part of pre-build
+
 echo "$(date)    post-create start" >> ~/status
 
 # this runs after pre-build

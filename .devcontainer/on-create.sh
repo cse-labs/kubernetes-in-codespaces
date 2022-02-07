@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this runs as part of pre-build
+
 echo "$(date)    on-create start" >> ~/status
 
 # clone repos
