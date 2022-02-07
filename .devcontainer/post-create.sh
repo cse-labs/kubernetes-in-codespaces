@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "post-create start" >> ~/status
+echo "$(date)    post-create start" >> ~/status
 
 # this runs after pre-build
 
@@ -8,4 +8,4 @@ echo "post-create start" >> ~/status
 git pull -C /workspaces/ngsa-app
 git pull -C /workspaces/webvalidate
 
-echo "post-create complete" >> ~/status
+echo "$(date)    post-create complete" >> ~/status

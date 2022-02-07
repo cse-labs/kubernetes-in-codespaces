@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "on-create start" >> ~/status
+echo "$(date)    on-create start" >> ~/status
 
 # clone repos
 git clone https://github.com/retaildevcrews/ngsa-app /workspaces/ngsa-app
@@ -30,4 +30,4 @@ docker pull mcr.microsoft.com/dotnet/sdk:5.0-alpine
 docker pull mcr.microsoft.com/dotnet/aspnet:5.0-alpine
 docker pull mcr.microsoft.com/dotnet/sdk:5.0
 
-echo "on-create complete" >> ~/status
+echo "$(date)    on-create complete" >> ~/status
