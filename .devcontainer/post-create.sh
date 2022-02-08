@@ -1,16 +1,11 @@
 #!/bin/bash
 
-echo "post-create start" >> ~/status
+# this runs at Codespace creation - not part of pre-build
 
-# this runs in background after UI is available
+echo "$(date)    post-create start" >> ~/status
 
-# (optional) upgrade packages
-#sudo apt-get update
-#sudo apt-get upgrade -y
-#sudo apt-get autoremove -y
-#sudo apt-get clean -y
+# update the repos
+git pull -C /workspaces/ngsa-app
+git pull -C /workspaces/webvalidate
 
-dotnet restore /workspaces/webvalidate/src/webvalidate.sln
-dotnet restore /workspaces/ngsa-app/Ngsa.App.csproj
-
-echo "post-create complete" >> ~/status
+echo "$(date)    post-create complete" >> ~/status
