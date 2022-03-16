@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: monitoring
+data:
+  grafana.ini:  |
+    [security]
+    admin_user = admin
+    admin_password = cse-labs
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,11 +41,21 @@ spec:
             memory: "256Mi"
             cpu: "200m"
         volumeMounts:
-          - mountPath: /var/lib/grafana
-            name: grafana-storage
-          - mountPath: /etc/grafana/provisioning/datasources
-            name: grafana-datasources
+          - name: grafana-storage
+            mountPath: /var/lib/grafana
+          - name: grafana-datasources 
+            mountPath: /etc/grafana/provisioning/datasources
             readOnly: false
+          - name: grafana-config
+            mountPath: /etc/grafana/grafana.ini
+            subPath: grafana.ini
+          - name: grafana-dashboard-provider
+            mountPath: /etc/grafana/provisioning/dashboards/dashboardProvider.yaml
+            subPath: dashboardProvider.yaml
+          - name: dashboards-ngsa
+            mountPath: /var/lib/grafana/dashboards/ngsa
+          - name: dashboards-dotnet
+            mountPath: /var/lib/grafana/dashboards/dotnet
       volumes:
         - name: grafana-storage
           hostPath:
@@ -41,6 +64,18 @@ spec:
           configMap:
               defaultMode: 420
               name: grafana-datasources
+        - name: grafana-config
+          configMap:
+            name: grafana-config
+        - name: grafana-dashboard-provider
+          configMap:
+            name: grafana-dashboard-provider
+        - name: dashboards-ngsa
+          configMap:
+            name: grafana-dashboards-ngsa
+        - name: dashboards-dotnet
+          configMap:
+            name: grafana-dashboards-dotnet
 
 ---
 

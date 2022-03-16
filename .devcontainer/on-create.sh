@@ -12,8 +12,8 @@ git clone https://github.com/microsoft/webvalidate /workspaces/webvalidate
 dotnet restore /workspaces/webvalidate/src/webvalidate.sln
 dotnet restore /workspaces/ngsa-app/Ngsa.App.csproj
 
-# copy grafana.db to /grafana
-sudo cp deploy/grafanadata/grafana.db /grafana
+# create dir to be used as storage for grafana config
+sudo mkdir /grafana
 sudo chown -R 472:0 /grafana
 
 # make sure everything is up to date

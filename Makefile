@@ -41,6 +41,7 @@ deploy :
 	# deploy prometheus and grafana
 	@kubectl apply -f deploy/prometheus
 	@kubectl apply -f deploy/grafana
+	@kubectl apply -f deploy/grafana/dashboards
 
 	# deploy fluent bit
 	@kubectl apply -f deploy/fluentbit
