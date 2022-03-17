@@ -8,8 +8,6 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    on-create start" >> "$HOME/status"
 # clone repos
 git clone https://github.com/cse-labs/imdb-app /workspaces/imdb-app
 git clone https://github.com/microsoft/webvalidate /workspaces/webvalidate
-### todo - remove akdc usage once kic image is available
-git clone https://github.com/retaildevcrews/akdc /workspaces/akdc
 
 export REPO_BASE=$PWD
 export PATH="$PATH:$REPO_BASE/bin"
@@ -58,6 +56,12 @@ docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 docker pull mcr.microsoft.com/dotnet/sdk:6.0
 docker pull ghcr.io/cse-labs/webv-red:latest
 docker pull ghcr.io/cse-labs/webv-red:beta
+
+### todo - remove akdc usage once kic image is available
+git clone https://github.com/retaildevcrews/akdc /workspaces/akdc
+pushd ../akdc/src/kic || exit
+go build -o ../../../kubernetes-in-codespaces/bin/kic main.go
+popd || exit
 
 echo "creating k3d cluster"
 kic cluster rebuild
