@@ -8,10 +8,37 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    on-create start" >> "$HOME/status"
 # clone repos
 git clone https://github.com/cse-labs/imdb-app /workspaces/imdb-app
 git clone https://github.com/microsoft/webvalidate /workspaces/webvalidate
+### todo - remove akdc usage once kic image is available
+git clone https://github.com/retaildevcrews/akdc /workspaces/akdc
+
+export REPO_BASE=$PWD
+export PATH="$PATH:$REPO_BASE/bin"
+
+mkdir -p "$HOME/.ssh"
+mkdir -p "$HOME/.oh-my-zsh/completions"
+
+# add cli completions
+cp ../akdc/src/_* "$HOME/.oh-my-zsh/completions"
+cp -r ../akdc/bin /workspaces/kubernetes-in-codespaces
+
+{
+    # add cli to path
+    echo "export PATH=\$PATH:$REPO_BASE/bin"
+
+    # create aliases
+    echo "alias mk='cd $REPO_BASE/../akdc/src/kic && make build; cd \$OLDPWD'"
+    echo "alias kic='akdc local'"
+    echo "alias flt='akdc fleet'"
+
+    echo "export REPO_BASE=$PWD"
+    echo "export KIC_PATH=/workspaces/kubernetes-in-codespaces/bin"
+    echo "export KIC_NAME=akdc"
+    echo "compinit"
+} >> "$HOME/.zshrc"
 
 # restore the repos
 dotnet restore /workspaces/webvalidate/src/webvalidate.sln
-dotnet restore /workspaces/imdb-app/imdb.csproj
+dotnet restore /workspaces/imdb-app/src/imdb.csproj
 
 # copy grafana.db to /grafana
 sudo cp .devcontainer/grafana.db /grafana
@@ -22,9 +49,6 @@ sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get autoremove -y
 sudo apt-get clean -y
-
-# todo - build cli from kic gh image
-echo "building cli"
 
 # create local registry
 docker network create k3d

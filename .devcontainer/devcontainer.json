@@ -21,7 +21,7 @@
 	"hostRequirements": {
 		"cpus": 4
 	},
-	
+
 	// forward ports for the app
 	"forwardPorts": [
 		30000,
@@ -40,6 +40,12 @@
 		"30088": { "label": "WebV-IMDb" },
 		"31088": { "label": "WebV-Heartbeat" },
 		"32000": { "label": "Grafana" }
+	},
+
+	// set env variables
+	"containerEnv": {
+		"KIC_PATH":"/workspaces/kubernetes-in-codespaces/bin",
+		"KIC_NAME":"akdc"
 	},
 
 	// Install extensions
