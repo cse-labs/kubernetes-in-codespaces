@@ -18,8 +18,8 @@ mkdir -p "$HOME/.ssh"
 mkdir -p "$HOME/.oh-my-zsh/completions"
 
 # add cli completions
-cp ../akdc/src/_* "$HOME/.oh-my-zsh/completions"
 cp -r ../akdc/bin .
+bin/kic completion zsh > "$HOME/.oh-my-zsh/completions"
 
 {
     # add cli to path
