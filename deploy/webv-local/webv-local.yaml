@@ -22,13 +22,14 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/cse-labs/webv-red:latest
+          image: k3d-registry.localhost:5500/webv:local
           imagePullPolicy: Always
 
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+
           livenessProbe:
             httpGet:
               path: /healthz
@@ -36,6 +37,7 @@ spec:
             initialDelaySeconds: 5
             failureThreshold: 10
             periodSeconds: 60
+
           startupProbe:
             httpGet:
               path: /healthz
@@ -51,6 +53,7 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "250m"
+
           args:
           - --sleep
           - "100"

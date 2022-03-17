@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webv
-  namespace: imdb
+  name: webv-heartbeat
+  namespace: heartbeat
   labels:
-    app.kubernetes.io/name: webv
+    app.kubernetes.io/name: webv-heartbeat
 spec:
   replicas: 1
   strategy:
@@ -14,75 +14,59 @@ spec:
        maxUnavailable: 1
   selector:
     matchLabels:
-      app: webv
+      app: webv-heartbeat
   template:
     metadata:
       labels:
-        app: webv
+        app: webv-heartbeat
     spec:
       containers:
         - name: app
           image: ghcr.io/cse-labs/webv-red:latest
           imagePullPolicy: Always
-
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: http
-            initialDelaySeconds: 5
-            failureThreshold: 10
-            periodSeconds: 60
-          startupProbe:
-            httpGet:
-              path: /healthz
-              port: http
-            initialDelaySeconds: 5
-            failureThreshold: 60
-            periodSeconds: 2
-
           resources:
             limits:
-              memory: "512Mi"
+              memory: "256Mi"
               cpu: "500m"
             requests:
-              memory: "256Mi"
+              memory: "128Mi"
               cpu: "250m"
           args:
           - --sleep
-          - "100"
+          - "5000"
           - --prometheus
           - --run-loop
           - --verbose
-          - --log-format
-          - Json
           - --server
-          - http://imdb:8080
+          - http://heartbeat:8080
           - --files
-          - benchmark.json
+          - heartbeat-benchmark.json
           - --zone
           - dev
           - --region
           - dev
-
+          - --log-format
+          - Json
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: webv
-  namespace: imdb
+  name: webv-heartbeat
+  namespace: heartbeat
   labels:
-    app: webv
+    app: webv-heartbeat
 spec:
   type: NodePort
   ports:
     - port: 8080
       targetPort: http
-      nodePort: 30088
+      nodePort: 31088
       protocol: TCP
       name: http
   selector:
-    app: webv
+    app: webv-heartbeat

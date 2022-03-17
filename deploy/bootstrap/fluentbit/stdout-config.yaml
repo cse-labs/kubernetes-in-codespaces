@@ -22,7 +22,7 @@ data:
   output.conf: |
     [OUTPUT]
         Name                stdout
-        Match               kube.var.log.containers.ngsa*.*
+        Match               kube.var.log.containers.webv*.*
 
   input-kubernetes.conf: |
     [INPUT]

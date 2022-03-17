@@ -20,11 +20,11 @@ spec:
           image: prom/prometheus:v2.29.1
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "1024Mi"
+              cpu: "1000m"
             requests: 
-              memory: "256Mi"
-              cpu: "250m"
+              memory: "1024Mi"
+              cpu: "1000m"
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus/"
