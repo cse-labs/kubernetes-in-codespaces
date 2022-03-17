@@ -19,20 +19,15 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
 
 # add cli completions
 cp ../akdc/src/_* "$HOME/.oh-my-zsh/completions"
-cp -r ../akdc/bin /workspaces/kubernetes-in-codespaces
+cp -r ../akdc/bin .
 
 {
     # add cli to path
     echo "export PATH=\$PATH:$REPO_BASE/bin"
 
-    # create aliases
-    echo "alias mk='cd $REPO_BASE/../akdc/src/kic && make build; cd \$OLDPWD'"
-    echo "alias kic='akdc local'"
-    echo "alias flt='akdc fleet'"
-
     echo "export REPO_BASE=$PWD"
-    echo "export KIC_PATH=/workspaces/kubernetes-in-codespaces/bin"
-    echo "export KIC_NAME=akdc"
+    echo "export KIC_PATH=$REPO_BASE/bin"
+    echo "export KIC_NAME=kic"
     echo "compinit"
 } >> "$HOME/.zshrc"
 
@@ -65,7 +60,7 @@ docker pull ghcr.io/cse-labs/webv-red:latest
 docker pull ghcr.io/cse-labs/webv-red:beta
 
 echo "creating k3d cluster"
-akdc local cluster rebuild
+kic cluster rebuild
 
 echo "on-create complete"
 echo "$(date +'%Y-%m-%d %H:%M:%S')    on-create complete" >> "$HOME/status"
