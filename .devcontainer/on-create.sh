@@ -52,7 +52,8 @@ docker pull ghcr.io/cse-labs/webv-red:latest
 docker pull ghcr.io/cse-labs/webv-red:beta
 
 echo "dowloading kic CLI"
-wget -O kic.tar.gz "https://github.com/retaildevcrews/akdc/releases/download/$(git ls-remote --refs --sort="version:refname" --tags https://github.com/retaildevcrews/akdc | cut -d/ -f3-|tail -n1)/kic-v0.2.2-linux-amd64.tar.gz"
+version=$(git ls-remote --refs --sort="version:refname" --tags https://github.com/retaildevcrews/akdc | cut -d/ -f3-|tail -n1)
+wget -O kic.tar.gz "https://github.com/retaildevcrews/akdc/releases/download/$version/kic-$version-linux-amd64.tar.gz"
 tar -xvzf kic.tar.gz
 rm kic.tar.gz
 mv kic bin
