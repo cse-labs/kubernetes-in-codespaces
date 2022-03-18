@@ -124,10 +124,10 @@ kic check all
   - Type `k9s` and press enter
   - Press `0` to select all namespaces
   - Wait for all pods to be in the `Running` state (look for the `STATUS` column)
-  - Use the arrow key to select `nsga-memory` then press the `l` key to view logs from the pod
+  - Use the arrow key to select `imdb` pod then press the `l` key to view logs from the pod
   - To go back, press the `esc` key
   - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
-    - Hit the `ngsa-memory` NodePort from within the cluster by executing `http ngsa-memory:8080/version`
+    - Hit the `IMDB-App` NodePort from within the cluster by executing `http ngsa-memory:8080/version`
     - Verify 200 status in the response
     - To exit - `exit`
   - To view other deployed resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
@@ -187,7 +187,9 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   "forwardPorts": [
     30000,
     30080,
+    31080,
     30088,
+    31088,
     32000
   ],
 
@@ -200,28 +202,46 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   // add labels
   "portsAttributes": {
     "30000": { "label": "Prometheus" },
-    "30080": { "label": "ngsa-app" },
-    "30088": { "label": "WebV" },
+    "30080": { "label": "IMDB-app" },
+    "31080": { "label": "Heartbeat" },
+    "30088": { "label": "WebV-IMDB" },
+    "31088": { "label": "WebV-Heartbeat" },
     "32000": { "label": "Grafana" },
   },
 
   ```
 
-## View NGSA App
+## View IMDB App
 
 - Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the ngsa-app port (30080)
-- This will open the ngsa-app home page (Swagger) in a new browser tab
+- Click on the `open in browser icon` on the IMDB-App port (30080)
+- This will open the imdb-app home page (Swagger) in a new browser tab
 
-## View Web Validate
+## View Web Validate for IMDB
 
 - Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the WebV port (30088)
+- Click on the `open in browser icon` on the WebV-IMDB port (30088)
 - This will open the Web Validate in a new browser tab
   - Note that you will get a 404 as WebV does not have a home page
   - Add `version` or `metrics` to the end of the URL in the browser tab
 
-## Build and deploy a local version of ngsa-memory
+## View Heartbeat
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the Heartbeat port (31080)
+- This will open the heartbeat home page (Swagger) in a new browser tab
+  - Note that you will see page `Under construction ...` as heartbeat does not have a UI
+  - Add `version` or `/heartbeat/17` to the end of the URL in the browser tab
+
+## View Web Validate for Heartbeat
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the WebV-Heartbeat port (31088)
+- This will open the Web Validate in a new browser tab
+  - Note that you will get a 404 as WebV does not have a home page
+  - Add `version` or `metrics` to the end of the URL in the browser tab
+
+## Build and deploy a local version of imdb-app
 
 - We have a local Docker container registry running in the Codespace
   - Run `docker ps` to see the running images
@@ -235,8 +255,8 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
   # from Codespaces terminal
 
-  # make and deploy a local version of ngsa-memory to k8s
-  kic build app
+  # make and deploy a local version of imdb-app to k8s
+  kic build imdb
 
   # check the app version
   # the semver will have the current date and time
@@ -251,9 +271,9 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - This will open Prometheus in a new browser tab
 
 - From the Prometheus tab
-  - Begin typing `NgsaAppDuration_bucket` in the `Expression` search
+  - Begin typing `ImdbAppDuration_bucket` in the `Expression` search
   - Click `Execute`
-  - This will display the `histogram` that Grafana uses for the charts
+  - This will display the log table that Grafana uses for the charts
 
 ## View Grafana Dashboard
 
@@ -269,7 +289,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ## Grafana Dashboard
 
-![Grafana](./images/ngsa-requests-by-mode.png)
+![Grafana](./images/imdb-requests-by-mode.png)
 
 ## Run integration and load tests
 
@@ -285,7 +305,7 @@ kic test load
 
 ```
 
-- Switch to the Grafana brower tab
+- Switch to the Grafana browser tab
 - The integration test generates 400 and 404 results by design
 - The requests metric will go from green to yellow to red as load increases
   - It may skip yellow
@@ -299,16 +319,15 @@ kic test load
 
 > Fluent Bit is set to forward logs to stdout for debugging
 >
-> Fluent Bit can be configured to forward to different services including Azure Log Analytics
+> Fluent Bit can be configured to forward to different services including Grafana or Azure Log Analytics
 
 - Start `k9s` from the Codespace terminal
 - Press `0` to show all `namespaces`
-- Select `fluentbit` and press `enter`
+- Select `fluentbit` pod and press `enter`
 - Press `enter` again to see the logs
 - Press `s` to Toggle AutoScroll
 - Press `w` to Toggle Wrap
-- Review logs that will be sent to Log Analytics when configured
-  - See `deploy/loganalytics` for directions
+- Review logs that will be sent to Grafana when configured
 
 ## How Codespaces is built
 
