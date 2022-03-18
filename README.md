@@ -6,17 +6,17 @@
 
 ## Overview
 
-This is a template that will setup a Kubernetes developer cluster using `k3d` in a `GitHub Codespace` or local `Dev Container`
+This is a template that will setup a Kubernetes developer cluster using `k3d` in a `GitHub Codespace`
 
 We use this for `inner-loop` Kubernetes development. Note that it is not appropriate for production use but is a great `Developer Experience`. Feedback calls the approach `game-changing` - we hope you agree!
 
 For ideas, feature requests, and discussions, please use GitHub discussions so we can collaborate and follow up.
 
-This Codespace is tested with `zsh` and `oh-my-zsh` - it "should" work with bash but hasn't been fully tested. For the HoL, please use zsh to avoid any issues.
+This Codespace is tested with `zsh` and `oh-my-zsh`.
 
-You can run the `dev container` locally and you can also connect to the Codespace with a local version of VS Code.
+You can connect to the Codespace with a local version of VS Code.
 
-Please experiment and add any issues to the GitHub Discussion. We LOVE PRs!
+Please experiment and add any issues to the GitHub Discussion.
 
 The motivation for creating and using Codespaces is highlighted by this [GitHub Blog Post](https://github.blog/2021-08-11-githubs-engineering-team-moved-codespaces/). "It eliminated the fragility and single-track model of local development environments, but it also gave us a powerful new point of leverage for improving GitHub’s developer experience."
 
@@ -26,7 +26,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 > You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
 
-- Instructions for joining the GitHub orgs are [here](https://github.com/cse-labs/moss)
+- Instructions for Microsoft FTEs are [here](https://github.com/cse-labs/moss)
   - If you don't see an `Open in Codespaces` option, you are not part of the organization(s)
 
 - Click the `Code` button on this repo
@@ -38,7 +38,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 ## Stopping a Codespace
 
-- Codespaces will shutdown automatically after 30 minutes of non-use
+- Codespaces will shutdown automatically after being idle for 30 minutes
 - To shutdown a codespace immediately
   - Click `Codespaces` in the lower left of the browser window
   - Choose `Stop Current Codespace` from the context menu
@@ -53,18 +53,15 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 - To delete a Codespace
   - <https://github.com/codespaces>
   - Use the context menu to delete the Codespace
+  - Please delete your Codespace once you complete the lab
+    - Creating a new Codespace only takes about 45 seconds!
 
-## Build and Deploy a k3d Cluster
+## Checking the k3d Cluster
 
-> A k3d cluster is created as part of the Codespace, so you can skip this step if you want
-
-- This will create a local Kubernetes cluster using k3d
-  - The cluster is running inside your Codespace
+- A k3d cluster is created as part of the Codespace setup
+  - `kic` is a small CLI that we use to simplify Kubernetes development
 
   ```bash
-
-  # build the cluster
-  kic cluster rebuild
 
   # check the pods
   kic pods
@@ -112,14 +109,23 @@ kic check all
 - From the Codespace terminal window, start `k9s`
   - Type `k9s` and press enter
   - Press `0` to select all namespaces
-  - Wait for all pods to be in the `Running` state (look for the `STATUS` column)
+  - Wait for all pods to be in the `Running` state (look at the `STATUS` column)
   - Use the arrow key to select `webv` pod for `imdb` then press the `l` key to view logs from the pod
-  - To go back, press the `esc` key
+    - To go back, press the `esc` key
   - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
-    - Hit the `IMDB-App` NodePort from within the cluster by executing `http imdb.imdb.svc.cluster.local:8080/version`
-    - Verify 200 status in the response
-    - To exit - `exit`
-  - To view other deployed resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
+    - Test the `IMDB-App` service from within the cluster by executing
+
+      ```bash
+
+      # httpie is a "pretty" version of curl
+      # test the imdb service endpoint using local DNS
+      http imdb.imdb.svc.cluster.local:8080/version
+
+      ```
+
+      - Verify 200 status in the response
+      - To exit - `exit`
+  - To view other resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
   - To exit - `:q <enter>`
 
 ![k9s](./images/k9s.png)
@@ -143,28 +149,24 @@ Clicking on `Send Request` should open a new panel in Visual Studio Code with th
 A `jump box` pod is created so that you can execute commands `in the cluster`
 
 - use the `kj` alias
-  - `kubectl exec -it jumpbox -- bash -l`
-    - note: -l causes a login and processes `.profile`
-    - note: `sh -l` will work, but the results will not be displayed in the terminal due to a bug
-- example
-  - run `kj`
-    - Your terminal prompt will change
-    - From the `jumpbox` terminal
-    - Run `http imdb.imdb.svc.cluster.local:8080/version`
-    - `exit` back to the Codespaces terminal
+  - example
+    - run `kj`
+      - Your terminal prompt will change
+      - From the `jumpbox` terminal
+      - Run `http imdb.imdb.svc.cluster.local:8080/version`
+      - `exit` back to the Codespaces terminal
 
 - use the `kje` alias
-  - `kubectl exec -it jumpbox --`
-- example
-  - run http against the ClusterIP
-    - `kje http imdb.imdb.svc.cluster.local:8080/version`
+  - example
+    - run http against the ClusterIP
+      - `kje http imdb.imdb.svc.cluster.local:8080/version`
 
 - Since the jumpbox is running `in` the cluster, we use the service name and port, not the NodePort
   - A jumpbox is great for debugging network issues
 
 ## NodePorts
 
-- Codespaces exposes `ports` to the browser
+- Codespaces exposes `ports` to the local browser
 - We take advantage of this by exposing `NodePort` on most of our K8s services
 - Codespaces ports are setup in the `.devcontainer/devcontainer.json` file
 
@@ -308,7 +310,7 @@ kic test load
 
 > Fluent Bit is set to forward logs to stdout for debugging
 >
-> Fluent Bit can be configured to forward to different services including Grafana or Azure Log Analytics
+> Fluent Bit can be configured to forward to different services including Grafana Cloud or Azure Log Analytics
 
 - Start `k9s` from the Codespace terminal
 - Press `0` to show all `namespaces`
@@ -320,7 +322,7 @@ kic test load
 
 ## How Codespaces is built
 
-Codespaces extends the use of development containers by providing a remote hosting environment for them. A development container is a fully-featured development environment running in a container.
+Codespaces extends the use of development containers by providing a remote hosting environment. A development container is a fully-featured development environment running in a Docker container.
 
 Developers can simply click on a button in GitHub to open a Codespace for the repo. Behind the scenes, GitHub Codespaces is:
 
@@ -332,16 +334,16 @@ Developers can simply click on a button in GitHub to open a Codespace for the re
 
 `.devcontainer` folder contains the following:
 
-- `devcontainer.json`: This configuration file determines the environment for new codespace created for the repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
+- `devcontainer.json`: This configuration file determines the environment for new Codespaces created for the repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. For more information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
 
-- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by designating it to `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
+- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by using the `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
 
-- `Bash scripts`: We store lifecycle scripts under a `.devcontainer` folder at the root. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
+- `Bash scripts`: We store lifecycle scripts under the `.devcontainer` folder. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
   - onCreateCommand - Run when creating the container
-  - postCreateCommand - Run inside the container after it is created
+  - postCreateCommand - Run after the container is created
   - postStartCommand - Run every time the container starts
 
-  For more information on using LifeCycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
+  For more information on using Lifecycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
 
   > Note: Provide executable permissions to scripts using: `chmod+ x`.
 
