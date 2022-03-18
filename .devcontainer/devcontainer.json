@@ -42,12 +42,6 @@
 		"32000": { "label": "Grafana" }
 	},
 
-	// set env variables
-	"containerEnv": {
-		"KIC_PATH":"/workspaces/kubernetes-in-codespaces/bin",
-		"KIC_NAME":"akdc"
-	},
-
 	// Install extensions
 	"extensions": [
 		"ms-dotnettools.csharp",
