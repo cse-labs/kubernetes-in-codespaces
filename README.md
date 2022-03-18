@@ -36,19 +36,6 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
-## Open Workspace
-
-> Wait until the Codespace is ready before opening the workspace
-
-- Once setup is complete, open the workspace
-  - Click the `hamburger` menu
-  - Click `File`
-  - Click `Open Workspace from file`
-  - Click `workspaces`
-  - Click `cse-labs.code-workspace`
-- Your screen will reload
-  - You may have to click on the terminal tab once Codespaces reloads
-
 ## Stopping a Codespace
 
 - Codespaces will shutdown automatically after 30 minutes of non-use
@@ -90,7 +77,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   kube-system   local-path-provisioner-5ff76fc89d-wfpjx   1/1     Running             0          48s
   kube-system   coredns-7448499f4d-dnjzl                  1/1     Running             0          48s
   kube-system   metrics-server-86cbb8457f-qlp8v           1/1     Running             0          48s
-  logging       fluentbit-f6c6d757b-mjh7r                 0/1     ContainerCreating   0          32s
+  logging       fluentbit-f6c6d757b-mjh7r                 1/1     Running             0          32s
   kube-system   helm-install-traefik-crd-zk5gr            0/1     Completed           0          48s
   kube-system   helm-install-traefik-mbr2l                0/1     Completed           1          48s
   heartbeat     heartbeat-65978f8f88-dw9fn                1/1     Running             0          32s
@@ -98,9 +85,9 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   imdb          imdb-79d8c756b-2p465                      1/1     Running             0          33s
   monitoring    grafana-5df456f89c-2r6cm                  1/1     Running             0          32s
   kube-system   svclb-traefik-2ks5t                       2/2     Running             0          22s
-  kube-system   traefik-97b44b794-txs9h                   0/1     Running             0          22s
+  kube-system   traefik-97b44b794-txs9h                   1/1     Running             0          22s
   heartbeat     webv-heartbeat-776cbf6fbf-jvk5x           1/1     Running             0          32s
-  imdb          webv-796c76d69d-5ghnq                     0/1     Running             0          4s
+  imdb          webv-796c76d69d-5ghnq                     1/1     Running             0          4s
   monitoring    prometheus-deployment-5c57d9b77d-tdtn2    1/1     Running             0          32s
 
   ```
@@ -125,6 +112,7 @@ kic check all
   - Press `0` to select all namespaces
   - Wait for all pods to be in the `Running` state (look for the `STATUS` column)
   - Use the arrow key to select `imdb` pod then press the `l` key to view logs from the pod
+  - Press `1` to go to the beginning of logs
   - To go back, press the `esc` key
   - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
     - Hit the `IMDB-App` NodePort from within the cluster by executing `http ngsa-memory:8080/version`
