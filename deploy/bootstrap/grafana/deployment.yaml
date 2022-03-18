@@ -6,8 +6,20 @@ metadata:
 data:
   grafana.ini:  |
     [security]
-    admin_user = admin
-    admin_password = cse-labs
+    admin_user = $__file{/etc/config/secrets/username}
+    admin_password = $__file{/etc/config/secrets/password}
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-secrets
+  namespace: monitoring
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: Y3NlLWxhYnM=
 
 ---
 
@@ -41,6 +53,8 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         volumeMounts:
+          - name: grafana-secrets
+            mountPath: /etc/config/secrets
           - name: grafana-storage
             mountPath: /var/lib/grafana
           - name: grafana-datasources
@@ -57,6 +71,9 @@ spec:
           - name: dashboards-dotnet
             mountPath: /var/lib/grafana/dashboards/dotnet
       volumes:
+        - name: grafana-secrets
+          secret:
+            secretName: grafana-secrets
         - name: grafana-storage
           hostPath:
             path: /grafana
