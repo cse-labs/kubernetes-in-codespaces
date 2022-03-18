@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imdb
+  namespace: imdb
+  labels:
+    app.kubernetes.io/name: imdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imdb
+  template:
+    metadata:
+      labels:
+        app: imdb
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/cse-labs/imdb-app:latest
+          imagePullPolicy: Always
+
+          args:
+          - --in-memory
+          - --zone
+          - dev
+          - --region
+          - dev
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          readinessProbe:
+            initialDelaySeconds: 5
+            failureThreshold: 60
+            periodSeconds: 2
+            httpGet:
+              path: /readyz
+              port: 8080
+
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            httpGet:
+              path: /healthz
+              port: 8080
+
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 64Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: imdb
+  namespace: imdb
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: imdb

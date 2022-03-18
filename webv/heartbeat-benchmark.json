@@ -1,0 +1,6 @@
+{
+  "requests":
+  [
+    {"path":"/heartbeat/17","validation":{"contentType":"text/plain", "length":17}}
+  ]
+}

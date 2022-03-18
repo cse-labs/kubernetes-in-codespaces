@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: monitoring
+data:
+  grafana.ini:  |
+    [security]
+    admin_user = admin
+    admin_password = cse-labs
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      name: grafana
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:8.1.1
+        ports:
+        - name: grafana
+          containerPort: 3000
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests: 
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+          - name: grafana-storage
+            mountPath: /var/lib/grafana
+          - name: grafana-datasources 
+            mountPath: /etc/grafana/provisioning/datasources
+            readOnly: false
+          - name: grafana-config
+            mountPath: /etc/grafana/grafana.ini
+            subPath: grafana.ini
+          - name: grafana-dashboard-provider
+            mountPath: /etc/grafana/provisioning/dashboards/dashboardProvider.yaml
+            subPath: dashboardProvider.yaml
+          - name: dashboards-ngsa
+            mountPath: /var/lib/grafana/dashboards/ngsa
+          - name: dashboards-dotnet
+            mountPath: /var/lib/grafana/dashboards/dotnet
+      volumes:
+        - name: grafana-storage
+          hostPath:
+            path: /grafana
+        - name: grafana-datasources
+          configMap:
+              defaultMode: 420
+              name: grafana-datasources
+        - name: grafana-config
+          configMap:
+            name: grafana-config
+        - name: grafana-dashboard-provider
+          configMap:
+            name: grafana-dashboard-provider
+        - name: dashboards-ngsa
+          configMap:
+            name: grafana-dashboards-ngsa
+        - name: dashboards-dotnet
+          configMap:
+            name: grafana-dashboards-dotnet
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/port:   '3000'
+spec:
+  selector: 
+    app: grafana
+  type: NodePort  
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 32000

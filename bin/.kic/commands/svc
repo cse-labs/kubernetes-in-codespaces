@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# name: svc
+# short: Get all services on the local dev cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+kubectl get svc -A

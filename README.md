@@ -75,20 +75,33 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   ```bash
 
   # build the cluster
-  make all
+  kic cluster rebuild
+
+  # check the pods
+  kic pods
 
   ```
 
-- Output from `make all` should resemble this
+- Output from `kic pods` should resemble this
 
   ```text
 
-  default      jumpbox                                   1/1   Running   0   25s
-  default      ngsa-memory                               1/1   Running   0   33s
-  default      webv                                      1/1   Running   0   31s
-  logging      fluentbit                                 1/1   Running   0   31s
-  monitoring   grafana-64f7dbcf96-cfmtd                  1/1   Running   0   32s
-  monitoring   prometheus-deployment-67cbf97f84-tjxm7    1/1   Running   0   32s
+  NAMESPACE     NAME                                      READY   STATUS              RESTARTS   AGE
+  kube-system   local-path-provisioner-5ff76fc89d-wfpjx   1/1     Running             0          48s
+  kube-system   coredns-7448499f4d-dnjzl                  1/1     Running             0          48s
+  kube-system   metrics-server-86cbb8457f-qlp8v           1/1     Running             0          48s
+  logging       fluentbit-f6c6d757b-mjh7r                 0/1     ContainerCreating   0          32s
+  kube-system   helm-install-traefik-crd-zk5gr            0/1     Completed           0          48s
+  kube-system   helm-install-traefik-mbr2l                0/1     Completed           1          48s
+  heartbeat     heartbeat-65978f8f88-dw9fn                1/1     Running             0          32s
+  default       jumpbox                                   1/1     Running             0          32s
+  imdb          imdb-79d8c756b-2p465                      1/1     Running             0          33s
+  monitoring    grafana-5df456f89c-2r6cm                  1/1     Running             0          32s
+  kube-system   svclb-traefik-2ks5t                       2/2     Running             0          22s
+  kube-system   traefik-97b44b794-txs9h                   0/1     Running             0          22s
+  heartbeat     webv-heartbeat-776cbf6fbf-jvk5x           1/1     Running             0          32s
+  imdb          webv-796c76d69d-5ghnq                     0/1     Running             0          4s
+  monitoring    prometheus-deployment-5c57d9b77d-tdtn2    1/1     Running             0          32s
 
   ```
 
@@ -101,7 +114,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 ```bash
 
 # check endpoints
-make check
+kic check all
 
 ```
 
@@ -223,14 +236,14 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   # from Codespaces terminal
 
   # make and deploy a local version of ngsa-memory to k8s
-  make app
+  kic build app
 
   # check the app version
   # the semver will have the current date and time
   http localhost:30080/version
 
   ```
-  
+
 ## View Prometheus Dashboard
 
 - Click on the `ports` tab of the terminal window
@@ -265,10 +278,10 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 # from Codespaces terminal
 
 # run an integration test (will generate warnings in Grafana)
-make test
+kic test integration
 
-# run a 60 second load test
-make load-test
+# run a 30 second load test
+kic test load
 
 ```
 

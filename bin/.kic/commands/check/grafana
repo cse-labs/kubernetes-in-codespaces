@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#name: grafana
+#short: Check Grafana status on the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+http localhost:32000/healthz

@@ -1,0 +1,10 @@
+{
+  "requests":
+  [
+    {"path":"/heartbeat/1048577","validation":{"statusCode":400}},
+    {"path":"/heartbeat/0","validation":{"statusCode":400}},
+    {"path":"/heartbeat/1024","validation":{"contentType":"text/plain", "length":1024}},
+    {"path":"/heartbeat/65536","validation":{"contentType":"text/plain", "length":65536}},
+    {"path":"/heartbeat/1048576","validation":{"contentType":"text/plain", "length":1048576}}
+  ]
+}

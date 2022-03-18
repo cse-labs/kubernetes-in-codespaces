@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#name: imdb
+#short: Build and deploy the IMDb reference app to the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+# validate directories
+if [ ! -d /workspaces/imdb-app ]; then echo "/workspaces/imdb-app directory not found. Please clone the imdb-app repo to /workspaces"; exit 1; fi
+if [ ! -d ./deploy ]; then echo "./deploy directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d ./deploy/webv ]; then echo "./deploy/webv directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d ./deploy/imdb ]; then echo "./deploy/imdb directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d ./deploy/imdb-local ]; then echo "./deploy/imdb-local directory not found. Please cd to an appropriate directory"; exit 1; fi
+
+# delete webv and imdb
+kubectl delete -f deploy/webv --ignore-not-found=true
+kubectl delete -f deploy/imdb --ignore-not-found=true
+
+# build and push the local image
+docker build /workspaces/imdb-app -t k3d-registry.localhost:5500/imdb-app:local
+docker push k3d-registry.localhost:5500/imdb-app:local
+
+# wait for delete to finish
+kubectl wait pod -l app=webv -n imdb --for delete --timeout=30s
+kubectl wait pod -l app=imdb -n imdb --for delete --timeout=30s
+
+# deploy local app and re-deploy webv
+kubectl apply -f deploy/imdb-local
+kubectl wait pod -l app=imdb -n imdb --for condition=ready --timeout=30s
+kubectl apply -f deploy/webv
+kubectl wait pod -l app=webv -n imdb --for condition=ready --timeout=30s
+
+# show status and curl results
+kubectl get po -n imdb
+http localhost:30080/version

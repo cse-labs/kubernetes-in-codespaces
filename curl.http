@@ -1,25 +1,45 @@
-# Swagger
-GET http://localhost:30080 HTTP/1.1
+# Heartbeat service
+GET http://localhost:31080/heartbeat/17 HTTP/1.1
 
 ###
 
-# NGSA version
-GET http://localhost:30080/version HTTP/1.1
+# IMDb readyz
+GET http://localhost:30080/readyz HTTP/1.1
 
 ###
 
-# NGSA metrics
-GET http://localhost:30080/metrics HTTP/1.1
-
-###
-
-# NGSA healthz
+# IMDb healthz
 GET http://localhost:30080/healthz HTTP/1.1
 
 ###
 
-# NGSA healthz ietf
+# IMDb healthz ietf
 GET http://localhost:30080/healthz/ietf HTTP/1.1
+
+###
+
+# IMDb metrics
+GET http://localhost:30080/metrics HTTP/1.1
+
+###
+
+# WebValidate-IMDb metrics
+GET http://localhost:30088/metrics HTTP/1.1
+
+###
+
+# WebValidate-Heartbeat metrics
+GET http://localhost:31088/metrics HTTP/1.1
+
+###
+
+# IMDb version
+GET http://localhost:30080/version HTTP/1.1
+
+###
+
+# Swagger Home Page
+GET http://localhost:30080 HTTP/1.1
 
 ###
 
@@ -73,11 +93,12 @@ GET http://localhost:30080/api/movies?rating=8.0 HTTP/1.1
 
 ###
 
-# WebValidate version
+# WebValidate-IMDb version
 # note the / url will fail by design
 GET http://localhost:30088/version HTTP/1.1
 
 ###
 
-# WebValidate metrics
-GET http://localhost:30088/metrics HTTP/1.1
+# WebValidate-Heartbeat version
+# note the / url will fail by design
+GET http://localhost:31088/version HTTP/1.1

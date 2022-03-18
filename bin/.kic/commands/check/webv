@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#name: webv
+#short: Check WebV status on the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+http localhost:30088/version
