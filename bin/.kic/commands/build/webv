@@ -25,5 +25,5 @@ kubectl apply -f deploy/webv-local
 kubectl wait pod -l app=webv -n imdb --for condition=ready --timeout=30s
 
 # show pods and curl results
-kubectl get po -n imdb
-http localhost:30088/version
+kubectl get pods -n imdb
+"$(dirname "${BASH_SOURCE[0]}")/../check/webv"
