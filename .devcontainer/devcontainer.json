@@ -12,27 +12,34 @@
 
 	// Set container specific settings
 	"settings": {
-		"terminal.integrated.defaultProfile.linux": "zsh"
+		"terminal.integrated.defaultProfile.linux": "zsh",
+		"files.trimTrailingWhitespace": true,
+		"files.trimFinalNewlines": true,
+		"files.insertFinalNewline": true
 	},
 
 	"hostRequirements": {
 		"cpus": 4
 	},
-	
+
 	// forward ports for the app
 	"forwardPorts": [
 		30000,
 		30080,
+		31080,
 		30088,
+		31088,
 		32000
 	],
 
 	// add labels
 	"portsAttributes": {
 		"30000": { "label": "Prometheus" },
-		"30080": { "label": "ngsa-app" },
-		"30088": { "label": "WebV" },
-		"32000": { "label": "Grafana" },
+		"30080": { "label": "IMDB App" },
+		"31080": { "label": "Heartbeat" },
+		"30088": { "label": "WebV-IMDB" },
+		"31088": { "label": "WebV-Heartbeat" },
+		"32000": { "label": "Grafana" }
 	},
 
 	// Install extensions
@@ -43,7 +50,8 @@
 		"davidanson.vscode-markdownlint",
 		"gruntfuggly.todo-tree",
 		"mutantdino.resourcemonitor",
-		"humao.rest-client"
+		"humao.rest-client",
+		"timonwong.shellcheck",
 	],
 
 	"waitFor": "postCreateCommand",

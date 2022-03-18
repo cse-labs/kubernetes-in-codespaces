@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#name: heartbeat
+#short: Check heartbeat status on the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+http localhost:31080/heartbeat/17
