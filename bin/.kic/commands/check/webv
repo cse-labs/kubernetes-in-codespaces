@@ -6,4 +6,4 @@
 # change to this directory
 #cd "$(dirname "${BASH_SOURCE[0]}")" || exit
 
-http localhost:30088/version
+kubectl exec -it jumpbox -- http webv.imdb.svc.cluster.local:8080/version
