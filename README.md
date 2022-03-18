@@ -56,6 +56,8 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 ## Build and Deploy a k3d Cluster
 
+> A k3d cluster is created as part of the Codespace, so you can skip this step if you want
+
 - This will create a local Kubernetes cluster using k3d
   - The cluster is running inside your Codespace
 
