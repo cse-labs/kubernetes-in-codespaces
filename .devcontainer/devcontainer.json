@@ -27,8 +27,6 @@
 		30000,
 		30080,
 		31080,
-		30088,
-		31088,
 		32000
 	],
 
@@ -37,8 +35,6 @@
 		"30000": { "label": "Prometheus" },
 		"30080": { "label": "IMDB App" },
 		"31080": { "label": "Heartbeat" },
-		"30088": { "label": "WebV-IMDB" },
-		"31088": { "label": "WebV-Heartbeat" },
 		"32000": { "label": "Grafana" }
 	},
 
