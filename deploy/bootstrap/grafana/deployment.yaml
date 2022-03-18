@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: monitoring
+data:
+  grafana.ini:  |
+    [security]
+    admin_user = admin
+    admin_password = cse-labs
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,15 +37,25 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-          requests: 
-            memory: "512Mi"
-            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
         volumeMounts:
-          - mountPath: /var/lib/grafana
-            name: grafana-storage
-          - mountPath: /etc/grafana/provisioning/datasources
-            name: grafana-datasources
+          - name: grafana-storage
+            mountPath: /var/lib/grafana
+          - name: grafana-datasources
+            mountPath: /etc/grafana/provisioning/datasources
             readOnly: false
+          - name: grafana-config
+            mountPath: /etc/grafana/grafana.ini
+            subPath: grafana.ini
+          - name: grafana-dashboard-provider
+            mountPath: /etc/grafana/provisioning/dashboards/dashboardProvider.yaml
+            subPath: dashboardProvider.yaml
+          - name: dashboards-imdb
+            mountPath: /var/lib/grafana/dashboards/imdb
+          - name: dashboards-dotnet
+            mountPath: /var/lib/grafana/dashboards/dotnet
       volumes:
         - name: grafana-storage
           hostPath:
@@ -41,6 +64,18 @@ spec:
           configMap:
               defaultMode: 420
               name: grafana-datasources
+        - name: grafana-config
+          configMap:
+            name: grafana-config
+        - name: grafana-dashboard-provider
+          configMap:
+            name: grafana-dashboard-provider
+        - name: dashboards-imdb
+          configMap:
+            name: grafana-dashboards-imdb
+        - name: dashboards-dotnet
+          configMap:
+            name: grafana-dashboards-dotnet
 
 ---
 
@@ -53,9 +88,9 @@ metadata:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '3000'
 spec:
-  selector: 
+  selector:
     app: grafana
-  type: NodePort  
+  type: NodePort
   ports:
     - port: 3000
       targetPort: 3000
