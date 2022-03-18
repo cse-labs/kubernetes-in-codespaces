@@ -51,14 +51,11 @@ docker pull mcr.microsoft.com/dotnet/sdk:6.0
 docker pull ghcr.io/cse-labs/webv-red:latest
 docker pull ghcr.io/cse-labs/webv-red:beta
 
-### todo - remove akdc usage once kic image is available
-echo "building kic CLI"
-git clone https://github.com/retaildevcrews/akdc /workspaces/akdc
-pushd ../akdc/src/kic || exit
-go build -o ../../../kubernetes-in-codespaces/bin/kic main.go
-popd || exit
-rm -rf ../akdc
-### end todo
+echo "dowloading kic CLI"
+wget -O kic.tar.gz "https://github.com/retaildevcrews/akdc/releases/download/$(git ls-remote --refs --sort="version:refname" --tags https://github.com/retaildevcrews/akdc | cut -d/ -f3-|tail -n1)/kic-v0.2.2-linux-amd64.tar.gz"
+tar -xvzf kic.tar.gz
+rm kic.tar.gz
+mv kic bin
 
 echo "generating kic completion"
 kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
