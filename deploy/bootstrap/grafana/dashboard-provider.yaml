@@ -10,9 +10,9 @@ data:
   dashboardProvider.yaml: |
     apiVersion: 1
     providers:
-    - name: ngsa
+    - name: imdb
       options:
-        path: /var/lib/grafana/dashboards/ngsa
+        path: /var/lib/grafana/dashboards/imdb
       orgId: 1
       type: file
       disableDeletion: false

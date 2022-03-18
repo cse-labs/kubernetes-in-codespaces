@@ -81,7 +81,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(increase(NgsaAppDuration_bucket[$interval])) by (le)",
+              "expr": "sum(increase(ImdbAppDuration_bucket[$interval])) by (le)",
               "format": "heatmap",
               "interval": "",
               "intervalFactor": 1,

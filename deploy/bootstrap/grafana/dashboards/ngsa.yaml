@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboards-ngsa
+  name: grafana-dashboards-imdb
   namespace: monitoring
   labels:
     app: grafana
 data:
-  ngsa.json: |-
+  imdb.json: |-
     {
       "annotations": {
         "list": [
@@ -112,7 +112,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(rate(NgsaAppDuration_count[1m])) by (mode)",
+              "expr": "sum(rate(ImdbAppDuration_count[1m])) by (mode)",
               "interval": "",
               "legendFormat": "{{category}}",
               "refId": "A"
@@ -195,7 +195,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(rate(NgsaAppDuration_count[1m]))",
+              "expr": "sum(rate(ImdbAppDuration_count[1m]))",
               "instant": false,
               "interval": "",
               "legendFormat": "",
@@ -204,7 +204,7 @@ data:
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "ngsa.app",
+          "title": "IMDb App",
           "type": "stat"
         },
         {
@@ -322,7 +322,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(increase(NgsaAppDuration_bucket[1m])) by (le)",
+              "expr": "sum(increase(ImdbAppDuration_bucket[1m])) by (le)",
               "format": "heatmap",
               "instant": false,
               "interval": "5m",
@@ -434,7 +434,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(rate(NgsaAppDuration_count{code != \"OK\"}[1m])) by (mode)",
+              "expr": "sum(rate(ImdbAppDuration_count{code != \"OK\"}[1m])) by (mode)",
               "interval": "",
               "legendFormat": "{{category}}",
               "refId": "A"
@@ -470,7 +470,7 @@ data:
         ]
       },
       "timezone": "browser",
-      "title": "ngsa",
-      "uid": "ngsa",
+      "title": "IMDb App",
+      "uid": "imdb",
       "version": 1
     }

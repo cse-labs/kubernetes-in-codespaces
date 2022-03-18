@@ -37,13 +37,13 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-          requests: 
+          requests:
             memory: "512Mi"
             cpu: "500m"
         volumeMounts:
           - name: grafana-storage
             mountPath: /var/lib/grafana
-          - name: grafana-datasources 
+          - name: grafana-datasources
             mountPath: /etc/grafana/provisioning/datasources
             readOnly: false
           - name: grafana-config
@@ -52,8 +52,8 @@ spec:
           - name: grafana-dashboard-provider
             mountPath: /etc/grafana/provisioning/dashboards/dashboardProvider.yaml
             subPath: dashboardProvider.yaml
-          - name: dashboards-ngsa
-            mountPath: /var/lib/grafana/dashboards/ngsa
+          - name: dashboards-imdb
+            mountPath: /var/lib/grafana/dashboards/imdb
           - name: dashboards-dotnet
             mountPath: /var/lib/grafana/dashboards/dotnet
       volumes:
@@ -70,9 +70,9 @@ spec:
         - name: grafana-dashboard-provider
           configMap:
             name: grafana-dashboard-provider
-        - name: dashboards-ngsa
+        - name: dashboards-imdb
           configMap:
-            name: grafana-dashboards-ngsa
+            name: grafana-dashboards-imdb
         - name: dashboards-dotnet
           configMap:
             name: grafana-dashboards-dotnet
@@ -88,9 +88,9 @@ metadata:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '3000'
 spec:
-  selector: 
+  selector:
     app: grafana
-  type: NodePort  
+  type: NodePort
   ports:
     - port: 3000
       targetPort: 3000
