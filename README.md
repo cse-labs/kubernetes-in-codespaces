@@ -36,19 +36,6 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
 
 ![Create Codespace](./images/OpenWithCodespaces.jpg)
 
-## Open Workspace
-
-> Wait until the Codespace is ready before opening the workspace
-
-- Once setup is complete, open the workspace
-  - Click the `hamburger` menu
-  - Click `File`
-  - Click `Open Workspace from file`
-  - Click `workspaces`
-  - Click `cse-labs.code-workspace`
-- Your screen will reload
-  - You may have to click on the terminal tab once Codespaces reloads
-
 ## Stopping a Codespace
 
 - Codespaces will shutdown automatically after 30 minutes of non-use
@@ -68,6 +55,8 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   - Use the context menu to delete the Codespace
 
 ## Build and Deploy a k3d Cluster
+
+> A k3d cluster is created as part of the Codespace, so you can skip this step if you want
 
 - This will create a local Kubernetes cluster using k3d
   - The cluster is running inside your Codespace
@@ -90,7 +79,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   kube-system   local-path-provisioner-5ff76fc89d-wfpjx   1/1     Running             0          48s
   kube-system   coredns-7448499f4d-dnjzl                  1/1     Running             0          48s
   kube-system   metrics-server-86cbb8457f-qlp8v           1/1     Running             0          48s
-  logging       fluentbit-f6c6d757b-mjh7r                 0/1     ContainerCreating   0          32s
+  logging       fluentbit-f6c6d757b-mjh7r                 1/1     Running             0          32s
   kube-system   helm-install-traefik-crd-zk5gr            0/1     Completed           0          48s
   kube-system   helm-install-traefik-mbr2l                0/1     Completed           1          48s
   heartbeat     heartbeat-65978f8f88-dw9fn                1/1     Running             0          32s
@@ -98,9 +87,9 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   imdb          imdb-79d8c756b-2p465                      1/1     Running             0          33s
   monitoring    grafana-5df456f89c-2r6cm                  1/1     Running             0          32s
   kube-system   svclb-traefik-2ks5t                       2/2     Running             0          22s
-  kube-system   traefik-97b44b794-txs9h                   0/1     Running             0          22s
+  kube-system   traefik-97b44b794-txs9h                   1/1     Running             0          22s
   heartbeat     webv-heartbeat-776cbf6fbf-jvk5x           1/1     Running             0          32s
-  imdb          webv-796c76d69d-5ghnq                     0/1     Running             0          4s
+  imdb          webv-796c76d69d-5ghnq                     1/1     Running             0          4s
   monitoring    prometheus-deployment-5c57d9b77d-tdtn2    1/1     Running             0          32s
 
   ```
@@ -124,10 +113,10 @@ kic check all
   - Type `k9s` and press enter
   - Press `0` to select all namespaces
   - Wait for all pods to be in the `Running` state (look for the `STATUS` column)
-  - Use the arrow key to select `nsga-memory` then press the `l` key to view logs from the pod
+  - Use the arrow key to select `webv` pod for `imdb` then press the `l` key to view logs from the pod
   - To go back, press the `esc` key
   - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
-    - Hit the `ngsa-memory` NodePort from within the cluster by executing `http ngsa-memory:8080/version`
+    - Hit the `IMDB-App` NodePort from within the cluster by executing `http imdb.imdb.svc.cluster.local:8080/version`
     - Verify 200 status in the response
     - To exit - `exit`
   - To view other deployed resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
@@ -161,14 +150,14 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - run `kj`
     - Your terminal prompt will change
     - From the `jumpbox` terminal
-    - Run `http ngsa-memory:8080/version`
+    - Run `http imdb.imdb.svc.cluster.local:8080/version`
     - `exit` back to the Codespaces terminal
 
 - use the `kje` alias
   - `kubectl exec -it jumpbox --`
 - example
   - run http against the ClusterIP
-    - `kje http ngsa-memory:8080/version`
+    - `kje http imdb.imdb.svc.cluster.local:8080/version`
 
 - Since the jumpbox is running `in` the cluster, we use the service name and port, not the NodePort
   - A jumpbox is great for debugging network issues
@@ -187,7 +176,9 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   "forwardPorts": [
     30000,
     30080,
+    31080,
     30088,
+    31088,
     32000
   ],
 
@@ -200,28 +191,46 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   // add labels
   "portsAttributes": {
     "30000": { "label": "Prometheus" },
-    "30080": { "label": "ngsa-app" },
-    "30088": { "label": "WebV" },
+    "30080": { "label": "IMDB-app" },
+    "31080": { "label": "Heartbeat" },
+    "30088": { "label": "WebV-IMDB" },
+    "31088": { "label": "WebV-Heartbeat" },
     "32000": { "label": "Grafana" },
   },
 
   ```
 
-## View NGSA App
+## View IMDB App
 
 - Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the ngsa-app port (30080)
-- This will open the ngsa-app home page (Swagger) in a new browser tab
+- Click on the `open in browser icon` on the IMDB-App port (30080)
+- This will open the imdb-app home page (Swagger) in a new browser tab
 
-## View Web Validate
+## View Web Validate for IMDB
 
 - Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the WebV port (30088)
+- Click on the `open in browser icon` on the WebV-IMDB port (30088)
 - This will open the Web Validate in a new browser tab
   - Note that you will get a 404 as WebV does not have a home page
   - Add `version` or `metrics` to the end of the URL in the browser tab
 
-## Build and deploy a local version of ngsa-memory
+## View Heartbeat
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the Heartbeat port (31080)
+- This will open the heartbeat home page (Swagger) in a new browser tab
+  - Note that you will see page `Under construction ...` as heartbeat does not have a UI
+  - Add `version` or `/heartbeat/17` to the end of the URL in the browser tab
+
+## View Web Validate for Heartbeat
+
+- Click on the `ports` tab of the terminal window
+- Click on the `open in browser icon` on the WebV-Heartbeat port (31088)
+- This will open the Web Validate in a new browser tab
+  - Note that you will get a 404 as WebV does not have a home page
+  - Add `version` or `metrics` to the end of the URL in the browser tab
+
+## Build and deploy a local version of imdb-app
 
 - We have a local Docker container registry running in the Codespace
   - Run `docker ps` to see the running images
@@ -235,8 +244,8 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
   # from Codespaces terminal
 
-  # make and deploy a local version of ngsa-memory to k8s
-  kic build app
+  # make and deploy a local version of imdb-app to k8s
+  kic build imdb
 
   # check the app version
   # the semver will have the current date and time
@@ -251,9 +260,9 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - This will open Prometheus in a new browser tab
 
 - From the Prometheus tab
-  - Begin typing `NgsaAppDuration_bucket` in the `Expression` search
+  - Begin typing `ImdbAppDuration_bucket` in the `Expression` search
   - Click `Execute`
-  - This will display the `histogram` that Grafana uses for the charts
+  - This will display the log table that Grafana uses for the charts
 
 ## View Grafana Dashboard
 
@@ -269,7 +278,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ## Grafana Dashboard
 
-![Grafana](./images/ngsa-requests-by-mode.png)
+![Grafana](./images/imdb-requests-by-mode.png)
 
 ## Run integration and load tests
 
@@ -285,7 +294,7 @@ kic test load
 
 ```
 
-- Switch to the Grafana brower tab
+- Switch to the Grafana browser tab
 - The integration test generates 400 and 404 results by design
 - The requests metric will go from green to yellow to red as load increases
   - It may skip yellow
@@ -299,16 +308,15 @@ kic test load
 
 > Fluent Bit is set to forward logs to stdout for debugging
 >
-> Fluent Bit can be configured to forward to different services including Azure Log Analytics
+> Fluent Bit can be configured to forward to different services including Grafana or Azure Log Analytics
 
 - Start `k9s` from the Codespace terminal
 - Press `0` to show all `namespaces`
-- Select `fluentbit` and press `enter`
+- Select `fluentbit` pod and press `enter`
 - Press `enter` again to see the logs
 - Press `s` to Toggle AutoScroll
 - Press `w` to Toggle Wrap
-- Review logs that will be sent to Log Analytics when configured
-  - See `deploy/loganalytics` for directions
+- Review logs that will be sent to Grafana when configured
 
 ## How Codespaces is built
 
@@ -316,32 +324,43 @@ Codespaces extends the use of development containers by providing a remote hosti
 
 Developers can simply click on a button in GitHub to open a Codespace for the repo. Behind the scenes, GitHub Codespaces is:
 
-- Spinning up a VM
-- Shallow cloning the repo in that VM. The shallow clone pulls the `devcontainer.json` onto the VM
-- Spins up the development container on the VM
-- Clones the repository in the development container
-- Connects you to the remotely hosted development container via the browser or Visual Studio Code
+- Starting a VM
+- Shallow clone the repo in that VM. The shallow clone pulls the `devcontainer.json` onto the VM
+- Start the development container on the VM
+- Clone the repository in the development container
+- Connect to the remotely hosted development container via the browser or Visual Studio Code
 
 `.devcontainer` folder contains the following:
 
-- `devcontainer.json`: This configuration file determines the environment of every new codespace anyone creates for repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
+- `devcontainer.json`: This configuration file determines the environment for new codespace created for the repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
 
-- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by dasignating it to `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
+- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by designating it to `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
 
-- `Bash scripts`: These scripts have to be placed under a `.devcontainer` folder at the root. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
+- `Bash scripts`: We store lifecycle scripts under a `.devcontainer` folder at the root. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
   - onCreateCommand - Run when creating the container
   - postCreateCommand - Run inside the container after it is created
   - postStartCommand - Run every time the container starts
 
-  For more information on using LifyCycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
+  For more information on using LifeCycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
 
   > Note: Provide executable permissions to scripts using: `chmod+ x`.
 
 ## Next Steps
 
-> [Makefile](./Makefile) is a good place to start exploring
+> Explore your Kubernetes in Codespaces cluster
 
-We use the `makefile` to encapsulate and document common tasks
+- kic CLI
+- K9s
+- kubectl
+- Docker
+
+If you break your cluster, just rebuild it using
+
+```bash
+
+kic cluster rebuild
+
+```
 
 ## FAQ
 
