@@ -347,9 +347,20 @@ Developers can simply click on a button in GitHub to open a Codespace for the re
 
 ## Next Steps
 
-> [Makefile](./Makefile) is a good place to start exploring
+> Explore your Kubernetes in Codespaces cluster
 
-We use the `makefile` to encapsulate and document common tasks
+- kic CLI
+- K9s
+- kubectl
+- Docker
+
+If you break your cluster, just rebuild it using
+
+```bash
+
+kic cluster rebuild
+
+```
 
 ## FAQ
 
