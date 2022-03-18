@@ -1,0 +1,78 @@
+###
+# root description and commands
+###
+
+root
+	name: kic
+	short: Kubernetes in Codespaces CLI
+	long: Kubernetes in Codespaces CLI\n\n  A CLI for automating many Kubernetes development tasks
+
+runCommand
+	path: pods
+
+runCommand
+	path: svc
+
+command
+	name: build
+	short: Build local apps
+
+runCommand
+	path: build/imdb
+
+runCommand
+	path: build/webv
+
+popCommand
+
+command
+	name: check
+	short: Check status on the local k3d cluster
+
+runCommand
+	path: check/all
+
+runCommand
+	path: check/heartbeat
+
+runCommand
+	path: check/imdb
+
+runCommand
+	path: check/webv
+
+runCommand
+	path: check/grafana
+
+runCommand
+	path: check/prometheus
+
+popCommand
+
+command
+	name: cluster
+	short: k3d cluster commands
+
+runCommand
+	path: cluster/rebuild
+
+runCommand
+	path: cluster/create
+
+runCommand
+	path: cluster/delete
+
+runCommand
+	path: cluster/jumpbox
+
+runCommand
+	path: cluster/clean
+
+runCommand
+	path: cluster/deploy
+
+popCommand
+
+command
+	name: fleet
+	hidden: true

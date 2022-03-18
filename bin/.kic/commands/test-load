@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#name: test
+#short: Run a WebValidate test against the cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+# this is called by the kic API in Go which handles parameter validation
+# you can call directly if you validate all of the WebV parameters
+#   or let WebV handle the errors
+
+docker run --net host --rm ghcr.io/cse-labs/webv-red:beta --server http://localhost:30080 "$@"

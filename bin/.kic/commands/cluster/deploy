@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# name: deploy
+# short: Deploy the apps to the local k3d cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+# validate directories
+if [ ! -d ./deploy ]; then echo "./deploy directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d ./deploy/webv ]; then echo "./deploy/webv directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d ./deploy/imdb ]; then echo "./deploy/imdb directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d ./deploy/bootstrap ]; then echo "./deploy/bootstrap directory not found. Please cd to an appropriate directory"; exit 1; fi
+
+# create namespace
+kubectl apply -f deploy
+
+# deploy imdb reference app
+kubectl apply -f deploy/imdb
+
+# deploy heartbeat, prometheus, grafana, and fluent bit
+kubectl apply -f deploy/bootstrap
+kubectl apply -R -f deploy/bootstrap
+
+"$(dirname "${BASH_SOURCE[0]}")/jumpbox"
+
+# deploy WebV after the app starts
+kubectl wait pod -l app=imdb -n imdb --for condition=ready --timeout=60s
+
+kubectl apply -f deploy/webv

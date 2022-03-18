@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# name: delete
+# short: Delete the k3d cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+k3d cluster delete

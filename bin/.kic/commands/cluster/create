@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# name: create
+# short: Create a new local k3d cluster
+
+# change to this directory
+# cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+# validate directories
+if [ ! -f "$REPO_BASE/.devcontainer/k3d.yaml" ]; then echo "File not found - \"$REPO_BASE\"/.devcontainer/k3d.yaml"; exit 1; fi
+
+"$(dirname "${BASH_SOURCE[0]}")/delete"
+
+echo ""
+echo "Creating cluster ..."
+
+k3d cluster create --registry-use k3d-registry.localhost:5500 --config "$REPO_BASE/.devcontainer/k3d.yaml"
+kubectl wait node --for condition=ready --all --timeout=30s
+sleep 10
+kubectl wait pod -l k8s-app=kube-dns -n kube-system --for condition=ready --timeout 30s

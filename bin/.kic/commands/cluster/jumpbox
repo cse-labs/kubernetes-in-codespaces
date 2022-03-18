@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# name: jumpbox
+# short: Deploy a 'jumpbox' to the local k3d cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+kubectl delete pod jumpbox --ignore-not-found=true
+kubectl run jumpbox --image=ghcr.io/cse-labs/jumpbox --restart=Always

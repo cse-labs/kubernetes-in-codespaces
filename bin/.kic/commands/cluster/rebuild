@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# name: rebuild
+# short: Create and bootstrap a local k3d cluster and deploy the apps
+
+# change to this directory
+# cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+"$(dirname "${BASH_SOURCE[0]}")/create"
+"$(dirname "${BASH_SOURCE[0]}")/deploy"
