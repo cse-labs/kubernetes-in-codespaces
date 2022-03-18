@@ -322,24 +322,24 @@ Codespaces extends the use of development containers by providing a remote hosti
 
 Developers can simply click on a button in GitHub to open a Codespace for the repo. Behind the scenes, GitHub Codespaces is:
 
-- Spinning up a VM
-- Shallow cloning the repo in that VM. The shallow clone pulls the `devcontainer.json` onto the VM
-- Spins up the development container on the VM
-- Clones the repository in the development container
-- Connects you to the remotely hosted development container via the browser or Visual Studio Code
+- Starting a VM
+- Shallow clone the repo in that VM. The shallow clone pulls the `devcontainer.json` onto the VM
+- Start the development container on the VM
+- Clone the repository in the development container
+- Connect to the remotely hosted development container via the browser or Visual Studio Code
 
 `.devcontainer` folder contains the following:
 
-- `devcontainer.json`: This configuration file determines the environment of every new codespace anyone creates for repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
+- `devcontainer.json`: This configuration file determines the environment for new codespace created for the repository by defining a development container that can include frameworks, tools, extensions, and port forwarding. It exists either at the root of the project or under a .devcontainer folder at the root. For information about the settings and properties that you can set in a devcontainer.json, see [devcontainer.json reference](https://code.visualstudio.com/docs/remote/devcontainerjson-reference) in the Visual Studio Code documentation.
 
-- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by dasignating it to `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
+- `Dockerfile`: Dockerfile in `.devcontainer` defines a container image and installs software. You can use an existing base image by designating it to `FROM` instruction. For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the Visual Studio Code documentation.
 
-- `Bash scripts`: These scripts have to be placed under a `.devcontainer` folder at the root. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
+- `Bash scripts`: We store lifecycle scripts under a `.devcontainer` folder at the root. They are the hooks that allow you to run commands at different points in the development container lifecycle which include:
   - onCreateCommand - Run when creating the container
   - postCreateCommand - Run inside the container after it is created
   - postStartCommand - Run every time the container starts
 
-  For more information on using LifyCycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
+  For more information on using LifeCycle scripts, see [Codespaces lifecycle scripts](https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts).
 
   > Note: Provide executable permissions to scripts using: `chmod+ x`.
 
