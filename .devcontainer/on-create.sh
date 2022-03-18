@@ -15,17 +15,11 @@ export PATH="$PATH:$REPO_BASE/bin"
 mkdir -p "$HOME/.ssh"
 mkdir -p "$HOME/.oh-my-zsh/completions"
 
-# add cli completions
-cp -r ../akdc/bin .
-bin/kic completion zsh > "$HOME/.oh-my-zsh/completions"
-
 {
     # add cli to path
     echo "export PATH=\$PATH:$REPO_BASE/bin"
 
-    echo "export REPO_BASE=$PWD"
-    echo "export KIC_PATH=$REPO_BASE/bin"
-    echo "export KIC_NAME=kic"
+    echo "export REPO_BASE=$REPO_BASE"
     echo "compinit"
 } >> "$HOME/.zshrc"
 
@@ -58,10 +52,16 @@ docker pull ghcr.io/cse-labs/webv-red:latest
 docker pull ghcr.io/cse-labs/webv-red:beta
 
 ### todo - remove akdc usage once kic image is available
+echo "building kic CLI"
 git clone https://github.com/retaildevcrews/akdc /workspaces/akdc
 pushd ../akdc/src/kic || exit
 go build -o ../../../kubernetes-in-codespaces/bin/kic main.go
 popd || exit
+rm -rf ../akdc
+### end todo
+
+echo "generating kic completion"
+kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
 
 echo "creating k3d cluster"
 kic cluster rebuild
