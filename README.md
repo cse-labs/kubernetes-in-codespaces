@@ -116,7 +116,7 @@ kic check all
   - Use the arrow key to select `webv` pod for `imdb` then press the `l` key to view logs from the pod
   - To go back, press the `esc` key
   - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
-    - Hit the `IMDB-App` NodePort from within the cluster by executing `http imdb:8080/version`
+    - Hit the `IMDB-App` NodePort from within the cluster by executing `http imdb.imdb.svc.cluster.local:8080/version`
     - Verify 200 status in the response
     - To exit - `exit`
   - To view other deployed resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
@@ -150,14 +150,14 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   - run `kj`
     - Your terminal prompt will change
     - From the `jumpbox` terminal
-    - Run `http imdb:8080/version`
+    - Run `http imdb.imdb.svc.cluster.local:8080/version`
     - `exit` back to the Codespaces terminal
 
 - use the `kje` alias
   - `kubectl exec -it jumpbox --`
 - example
   - run http against the ClusterIP
-    - `kje http imdb:8080/version`
+    - `kje http imdb.imdb.svc.cluster.local:8080/version`
 
 - Since the jumpbox is running `in` the cluster, we use the service name and port, not the NodePort
   - A jumpbox is great for debugging network issues
