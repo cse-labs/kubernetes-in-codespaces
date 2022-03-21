@@ -27,10 +27,6 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
 dotnet restore /workspaces/webvalidate/src/webvalidate.sln
 dotnet restore /workspaces/imdb-app/src/imdb.csproj
 
-# copy grafana.db to /grafana
-sudo cp .devcontainer/grafana.db /grafana
-sudo chown -R 472:0 /grafana
-
 # make sure everything is up to date
 sudo apt-get update
 sudo apt-get upgrade -y

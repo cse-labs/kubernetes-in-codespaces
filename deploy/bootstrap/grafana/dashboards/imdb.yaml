@@ -1,0 +1,476 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-imdb
+  namespace: monitoring
+  labels:
+    app: grafana
+data:
+  imdb.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "",
+      "editable": true,
+      "gnetId": 10915,
+      "graphTooltip": 0,
+      "id": 1,
+      "links": [],
+      "panels": [
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 14,
+            "x": 0,
+            "y": 0
+          },
+          "id": 2,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.1.1",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sum(rate(ImdbAppDuration_count[1m])) by (mode)",
+              "interval": "",
+              "legendFormat": "{{category}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Requests",
+          "type": "timeseries"
+        },
+        {
+          "cacheTimeout": null,
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 1,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 20
+                  },
+                  {
+                    "color": "red",
+                    "value": 40
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 5,
+            "x": 14,
+            "y": 0
+          },
+          "id": 5,
+          "interval": null,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "value"
+          },
+          "pluginVersion": "8.1.1",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sum(rate(ImdbAppDuration_count[1m]))",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "IMDb App",
+          "type": "stat"
+        },
+        {
+          "cacheTimeout": null,
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 1,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 20
+                  },
+                  {
+                    "color": "red",
+                    "value": 40
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 5,
+            "x": 19,
+            "y": 0
+          },
+          "id": 9,
+          "interval": null,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "auto"
+          },
+          "pluginVersion": "8.1.1",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sum(rate(WebVDuration_count[1m]))",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "WebV",
+          "type": "stat"
+        },
+        {
+          "cards": {
+            "cardPadding": null,
+            "cardRound": null
+          },
+          "color": {
+            "cardColor": "#FF9830",
+            "colorScale": "sqrt",
+            "colorScheme": "interpolateOranges",
+            "exponent": 0.5,
+            "mode": "opacity"
+          },
+          "dataFormat": "tsbuckets",
+          "datasource": "prometheus",
+          "description": "",
+          "gridPos": {
+            "h": 14,
+            "w": 10,
+            "x": 14,
+            "y": 2
+          },
+          "heatmap": {},
+          "hideZeroBuckets": false,
+          "highlightCards": true,
+          "id": 8,
+          "legend": {
+            "show": false
+          },
+          "reverseYBuckets": false,
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sum(increase(ImdbAppDuration_bucket[1m])) by (le)",
+              "format": "heatmap",
+              "instant": false,
+              "interval": "5m",
+              "intervalFactor": 1,
+              "legendFormat": "{{le}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Duration",
+          "tooltip": {
+            "show": true,
+            "showHistogram": false
+          },
+          "type": "heatmap",
+          "xAxis": {
+            "show": true
+          },
+          "xBucketNumber": null,
+          "xBucketSize": null,
+          "yAxis": {
+            "decimals": 0,
+            "format": "ms",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true,
+            "splitFactor": null
+          },
+          "yBucketBound": "auto",
+          "yBucketNumber": null,
+          "yBucketSize": null
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 14,
+            "x": 0,
+            "y": 8
+          },
+          "id": 3,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.1.1",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sum(rate(ImdbAppDuration_count{code != \"OK\"}[1m])) by (mode)",
+              "interval": "",
+              "legendFormat": "{{category}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Errors",
+          "type": "timeseries"
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 30,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-15m",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h"
+        ]
+      },
+      "timezone": "browser",
+      "title": "IMDb App",
+      "uid": "imdb",
+      "version": 1
+    }

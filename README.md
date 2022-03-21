@@ -104,33 +104,7 @@ kic check all
 
 ```
 
-## Validate deployment with k9s
-
-- From the Codespace terminal window, start `k9s`
-  - Type `k9s` and press enter
-  - Press `0` to select all namespaces
-  - Wait for all pods to be in the `Running` state (look at the `STATUS` column)
-  - Use the arrow key to select `webv` pod for `imdb` then press the `l` key to view logs from the pod
-    - To go back, press the `esc` key
-  - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
-    - Test the `IMDB-App` service from within the cluster by executing
-
-      ```bash
-
-      # httpie is a "pretty" version of curl
-      # test the imdb service endpoint using local DNS
-      http imdb.imdb.svc.cluster.local:8080/version
-
-      ```
-
-      - Verify 200 status in the response
-      - To exit - `exit`
-  - To view other resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
-  - To exit - `:q <enter>`
-
-![k9s](./images/k9s.png)
-
-### Other interesting endpoints
+### Validating endpoints
 
 Open [curl.http](./curl.http)
 
@@ -179,8 +153,6 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
     30000,
     30080,
     31080,
-    30088,
-    31088,
     32000
   ],
 
@@ -195,8 +167,6 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
     "30000": { "label": "Prometheus" },
     "30080": { "label": "IMDB-app" },
     "31080": { "label": "Heartbeat" },
-    "30088": { "label": "WebV-IMDB" },
-    "31088": { "label": "WebV-Heartbeat" },
     "32000": { "label": "Grafana" },
   },
 
@@ -208,14 +178,6 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - Click on the `open in browser icon` on the IMDB-App port (30080)
 - This will open the imdb-app home page (Swagger) in a new browser tab
 
-## View Web Validate for IMDB
-
-- Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the WebV-IMDB port (30088)
-- This will open the Web Validate in a new browser tab
-  - Note that you will get a 404 as WebV does not have a home page
-  - Add `version` or `metrics` to the end of the URL in the browser tab
-
 ## View Heartbeat
 
 - Click on the `ports` tab of the terminal window
@@ -223,14 +185,6 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 - This will open the heartbeat home page (Swagger) in a new browser tab
   - Note that you will see page `Under construction ...` as heartbeat does not have a UI
   - Add `version` or `/heartbeat/17` to the end of the URL in the browser tab
-
-## View Web Validate for Heartbeat
-
-- Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the WebV-Heartbeat port (31088)
-- This will open the Web Validate in a new browser tab
-  - Note that you will get a 404 as WebV does not have a home page
-  - Add `version` or `metrics` to the end of the URL in the browser tab
 
 ## Build and deploy a local version of imdb-app
 
@@ -254,6 +208,51 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   http localhost:30080/version
 
   ```
+
+## Validate deployment with k9s
+
+- From the Codespace terminal window, start `k9s`
+  - Type `k9s` and press enter
+  - Press `0` to select all namespaces
+
+  - Use the arrow key to select `webv` pod for `heartbeat` then press the `l` key to view logs from the pod
+    - Notice that WebV is making a heartbeat request every 5 seconds
+    - To go back, press the `esc` key
+
+  - Use the arrow key to select `webv` pod for `imdb` then press the `l` key to view logs from the pod
+    - Notice that WebV is making 10 IMDb requests per second
+    - To go back, press the `esc` key
+
+  - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
+    - Test the `IMDB-App` service from within the cluster by executing
+
+      ```bash
+
+      # httpie is a "pretty" version of curl
+      # test the webv-imdb service endpoint using local DNS
+      http webv.imdb.svc.cluster.local:8080/metrics
+
+      ```
+
+      - `exit <enter>`
+  - To view other resources - press `shift + :` followed by the deployment type (e.g. `secret`, `services`, `deployment`, etc).
+
+![k9s](./images/k9s.png)
+
+## View Fluent Bit Logs
+
+> Fluent Bit is set to forward logs to stdout for debugging
+>
+> Fluent Bit can be configured to forward to different services including Grafana Cloud or Azure Log Analytics
+
+- Start `k9s` from the Codespace terminal
+- Press `0` to show all `namespaces`
+- Select `fluentbit` pod and press `enter`
+- Press `enter` again to see the logs
+- Press `s` to Toggle AutoScroll
+- Press `w` to Toggle Wrap
+- Review logs that will be sent to Grafana when configured
+- To exit K9s - `:q <enter>`
 
 ## View Prometheus Dashboard
 
@@ -305,20 +304,6 @@ kic test load
   - The request graph will return to normal
 
 ![Load Test](./images/test-with-errors-and-load-test.png)
-
-## View Fluent Bit Logs
-
-> Fluent Bit is set to forward logs to stdout for debugging
->
-> Fluent Bit can be configured to forward to different services including Grafana Cloud or Azure Log Analytics
-
-- Start `k9s` from the Codespace terminal
-- Press `0` to show all `namespaces`
-- Select `fluentbit` pod and press `enter`
-- Press `enter` again to see the logs
-- Press `s` to Toggle AutoScroll
-- Press `w` to Toggle Wrap
-- Review logs that will be sent to Grafana when configured
 
 ## How Codespaces is built
 
