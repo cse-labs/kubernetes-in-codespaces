@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/retaildevcrews/heartbeat:latest
+          image: ghcr.io/cse-labs/heartbeat:latest
           imagePullPolicy: Always
           resources:
             limits:
@@ -32,6 +32,19 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 5
+            failureThreshold: 60
+            periodSeconds: 2
+            httpGet:
+              path: /readyz
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            httpGet:
+              path: /healthz
+              port: 8080
 
 ---
 apiVersion: v1
