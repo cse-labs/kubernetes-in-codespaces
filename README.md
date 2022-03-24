@@ -22,12 +22,17 @@ The motivation for creating and using Codespaces is highlighted by this [GitHub 
 
 Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast where he shared the GitHub journey to [Codespaces](https://changelog.com/podcast/459)
 
-## Open with Codespaces
+## Join the CSE-Labs GitHub Org
 
 > You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
 
-- Instructions for Microsoft FTEs are [here](https://github.com/cse-labs/moss)
-  - If you don't see an `Open in Codespaces` option, you are not part of the organization(s)
+- If you can't open a Codespace in this repo, you need to join the GitHub org(s)
+  - Instructions for joining are [here](https://github.com/cse-labs/moss)
+- Return to this repo after joining the org(s)
+
+## Open with Codespaces
+
+> You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
 
 - Click the `Code` button on this repo
 - Click the `Codespaces` tab
