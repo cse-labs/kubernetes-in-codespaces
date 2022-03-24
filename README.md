@@ -216,6 +216,8 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ## Validate deployment with k9s
 
+> To exit K9s - `:q <enter>`
+
 - From the Codespace terminal window, start `k9s`
   - Type `k9s` and press enter
   - Press `0` to select all namespaces
@@ -250,14 +252,15 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 >
 > Fluent Bit can be configured to forward to different services including Grafana Cloud or Azure Log Analytics
 
-- Start `k9s` from the Codespace terminal
+- Start `k9s` from the Codespace terminal (if it's not running from previous step)
 - Press `0` to show all `namespaces`
 - Select `fluentbit` pod and press `enter`
 - Press `enter` again to see the logs
 - Press `s` to Toggle AutoScroll
 - Press `w` to Toggle Wrap
 - Review logs that will be sent to Grafana when configured
-- To exit K9s - `:q <enter>`
+
+> To exit K9s - `:q <enter>`
 
 ## View Prometheus Dashboard
 
