@@ -8,6 +8,8 @@ data:
     [security]
     admin_user = $__file{/etc/config/secrets/username}
     admin_password = $__file{/etc/config/secrets/password}
+    [dashboards]
+    default_home_dashboard_path = "/var/lib/grafana/dashboards/imdb/imdb.json"
 
 ---
 
