@@ -22,12 +22,17 @@ The motivation for creating and using Codespaces is highlighted by this [GitHub 
 
 Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast where he shared the GitHub journey to [Codespaces](https://changelog.com/podcast/459)
 
-## Open with Codespaces
+## Join the CSE-Labs GitHub Org
 
 > You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
 
-- Instructions for Microsoft FTEs are [here](https://github.com/cse-labs/moss)
-  - If you don't see an `Open in Codespaces` option, you are not part of the organization(s)
+- If you can't open a Codespace in this repo, you need to join the GitHub org(s)
+  - Instructions for joining are [here](https://github.com/cse-labs/moss)
+- Return to this repo after joining the org(s)
+
+## Open with Codespaces
+
+> You must be a member of the Microsoft OSS and CSE-Labs GitHub organizations
 
 - Click the `Code` button on this repo
 - Click the `Codespaces` tab
@@ -211,6 +216,8 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ## Validate deployment with k9s
 
+> To exit K9s - `:q <enter>`
+
 - From the Codespace terminal window, start `k9s`
   - Type `k9s` and press enter
   - Press `0` to select all namespaces
@@ -245,14 +252,15 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 >
 > Fluent Bit can be configured to forward to different services including Grafana Cloud or Azure Log Analytics
 
-- Start `k9s` from the Codespace terminal
+- Start `k9s` from the Codespace terminal (if it's not running from previous step)
 - Press `0` to show all `namespaces`
 - Select `fluentbit` pod and press `enter`
 - Press `enter` again to see the logs
 - Press `s` to Toggle AutoScroll
 - Press `w` to Toggle Wrap
 - Review logs that will be sent to Grafana when configured
-- To exit K9s - `:q <enter>`
+
+> To exit K9s - `:q <enter>`
 
 ## View Prometheus Dashboard
 

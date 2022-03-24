@@ -7,6 +7,4 @@
 #cd "$(dirname "${BASH_SOURCE[0]}")" || exit
 
 kubectl delete ns imdb --ignore-not-found=true
-kubectl delete ns monitoring --ignore-not-found=true
-kubectl delete ns logging --ignore-not-found=true
 kubectl delete pod jumpbox --ignore-not-found=true
