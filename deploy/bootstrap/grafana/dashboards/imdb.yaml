@@ -204,7 +204,7 @@ data:
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "IMDB App",
+          "title": "IMDb App",
           "type": "stat"
         },
         {
@@ -470,7 +470,7 @@ data:
         ]
       },
       "timezone": "browser",
-      "title": "IMDB App",
+      "title": "IMDb App",
       "uid": "imdb",
       "version": 1
     }
