@@ -285,9 +285,17 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ![Codespace Ports](./images/CodespacePorts.jpg)
 
-## Grafana Dashboard
+> `IMDB-App` dashboard is set as default home dashboard to view constant load generated to the IMDB application.
 
 ![Grafana](./images/imdb-requests-by-mode.png)
+
+### Explore Grafana Dashboards
+
+- Click on the dashboard folder `General` (with four squares) to access the dashboard search. The dashboard search can also be opened by using the shortcut `F`.
+- The list will show all the dashboards configured in Grafana.
+- We configure two dashboards as part of the initial deployment:
+  - IMDB App
+  - Dotnet
 
 ## Run integration and load tests
 
