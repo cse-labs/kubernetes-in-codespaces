@@ -33,7 +33,7 @@
 	// add labels
 	"portsAttributes": {
 		"30000": { "label": "Prometheus" },
-		"30080": { "label": "IMDB App" },
+		"30080": { "label": "IMDb App" },
 		"31080": { "label": "Heartbeat" },
 		"32000": { "label": "Grafana" }
 	},
