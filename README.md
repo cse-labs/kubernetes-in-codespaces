@@ -170,7 +170,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
   // add labels
   "portsAttributes": {
     "30000": { "label": "Prometheus" },
-    "30080": { "label": "IMDB-app" },
+    "30080": { "label": "IMDb-app" },
     "31080": { "label": "Heartbeat" },
     "32000": { "label": "Grafana" },
   },
@@ -180,7 +180,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 ## View IMDB App
 
 - Click on the `ports` tab of the terminal window
-- Click on the `open in browser icon` on the IMDB-App port (30080)
+- Click on the `open in browser icon` on the IMDb-App port (30080)
 - This will open the imdb-app home page (Swagger) in a new browser tab
 
 ## View Heartbeat
@@ -231,7 +231,7 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
     - To go back, press the `esc` key
 
   - Use the arrow key to select `jumpbox` then press `s` key to open a shell in the container
-    - Test the `IMDB-App` service from within the cluster by executing
+    - Test the `IMDb-App` service from within the cluster by executing
 
       ```bash
 
@@ -285,9 +285,17 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 
 ![Codespace Ports](./images/CodespacePorts.jpg)
 
-## Grafana Dashboard
+> `IMDb-App` dashboard is set as the default home dashboard to visualize constant load generated to the IMDB application.
 
 ![Grafana](./images/imdb-requests-by-mode.png)
+
+### Explore Grafana Dashboards
+
+- Click on the dashboard folder `General` at the top (with four squares) to access the dashboard search. The dashboard search can also be opened by using the shortcut `F`.
+- The list will show all the dashboards configured in Grafana.
+- We configure two dashboards as part of the initial deployment:
+  - IMDb App
+  - Dotnet
 
 ## Run integration and load tests
 
