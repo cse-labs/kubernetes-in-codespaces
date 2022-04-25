@@ -7,7 +7,7 @@ FROM ghcr.io/cse-labs/k3d:latest
 ARG USERNAME=vscode
 
 # log the docker build start event
-RUN echo "$(date +'%Y-%m-%d %H:%M:%S')    docker build start" >> /home/$USERNAME/status &&
+RUN echo "$(date +'%Y-%m-%d %H:%M:%S')    docker build start" >> /home/$USERNAME/status
 
 # install fluent-bit
 RUN curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg && \
