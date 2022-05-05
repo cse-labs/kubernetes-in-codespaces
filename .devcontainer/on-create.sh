@@ -10,14 +10,14 @@ git clone https://github.com/cse-labs/imdb-app /workspaces/imdb-app
 git clone https://github.com/microsoft/webvalidate /workspaces/webvalidate
 
 export REPO_BASE=$PWD
-export PATH="$PATH:$REPO_BASE/bin"
+export PATH="$PATH:$HOME/bin"
 
 mkdir -p "$HOME/.ssh"
-mkdir -p "$HOME/.oh-my-zsh/completions"
+mkdir -p "$HOME/bin"
 
 {
     # add cli to path
-    echo "export PATH=\$PATH:$REPO_BASE/bin"
+    echo "export PATH=\$PATH:\$HOME/bin"
 
     echo "export REPO_BASE=$REPO_BASE"
     echo "compinit"
@@ -39,20 +39,15 @@ k3d registry create registry.localhost --port 5500
 docker network connect k3d k3d-registry.localhost
 
 # update the base docker images
-docker pull mcr.microsoft.com/dotnet/sdk:5.0-alpine
-docker pull mcr.microsoft.com/dotnet/aspnet:5.0-alpine
-docker pull mcr.microsoft.com/dotnet/sdk:5.0
 docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 docker pull mcr.microsoft.com/dotnet/sdk:6.0
 docker pull ghcr.io/cse-labs/webv-red:latest
-docker pull ghcr.io/cse-labs/webv-red:beta
 
 echo "dowloading kic CLI"
-version=$(git ls-remote --refs --sort="version:refname" --tags https://github.com/retaildevcrews/akdc | cut -d/ -f3-|tail -n1)
-wget -O kic.tar.gz "https://github.com/retaildevcrews/akdc/releases/download/$version/kic-$version-linux-amd64.tar.gz"
-tar -xvzf kic.tar.gz
-rm kic.tar.gz
-mv kic bin
+wget -qO "$HOME/bin/kic" https://github.com/retaildevcrews/akdc/raw/main/bin/kic
+wget -qO "$HOME/bin/path" https://github.com/retaildevcrews/akdc/raw/main/bin/path
+chmod +x "$HOME/bin/kic"
+chmod +x "$HOME/bin/path"
 
 echo "generating kic completion"
 kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
