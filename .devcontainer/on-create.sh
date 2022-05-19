@@ -44,10 +44,16 @@ docker pull mcr.microsoft.com/dotnet/sdk:6.0
 docker pull ghcr.io/cse-labs/webv-red:latest
 
 echo "dowloading kic CLI"
-wget -qO "$HOME/bin/kic" https://github.com/retaildevcrews/akdc/raw/main/bin/kic
-wget -qO "$HOME/bin/path" https://github.com/retaildevcrews/akdc/raw/main/bin/path
-chmod +x "$HOME/bin/kic"
-chmod +x "$HOME/bin/path"
+# download cli
+mkdir -p "$HOME/bin"
+cd "$HOME/bin" || exit
+
+tag=$(curl -s https://api.github.com/repos/retaildevcrews/akdc/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
+wget -O kic.tar.gz https://github.com/retaildevcrews/akdc/releases/download/$tag/kic-$tag-linux-amd64.tar.gz
+tar -zxvf kic.tar.gz
+rm -f kic.tar.gz
+
+cd "$OLDPWD" || exit
 
 echo "generating kic completion"
 kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
