@@ -9,8 +9,7 @@ ARG USERNAME=vscode
 # log the docker build start event
 RUN echo "$(date +'%Y-%m-%d %H:%M:%S')    docker build start" >> /home/$USERNAME/status
 
-RUN apt-get update && \
-    chown -R $USERNAME:$USERNAME /home/$USERNAME
+RUN chown -R $USERNAME:$USERNAME /home/$USERNAME
 
 # log the docker build complete
 RUN echo "$(date +'%Y-%m-%d %H:%M:%S')    docker build complete" >> /home/$USERNAME/status
