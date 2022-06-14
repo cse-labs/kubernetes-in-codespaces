@@ -39,6 +39,13 @@ docker pull ghcr.io/cse-labs/webv-red:latest
 echo "generating kic completion"
 kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
 
+echo "bilding IMDb"
+kic build imdb
+
+echo "building WebValidate"
+sed -i "s/RUN dotnet test//g" /workspaces/webvalidate/Dockerfile
+kic build webv
+
 echo "creating k3d cluster"
 kic cluster rebuild
 
