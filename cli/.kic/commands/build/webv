@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#name: webv
+#short: Build and deploy WebValidate to the local cluster
+
+# change to repo base dir
+cd "$REPO_BASE" || exit
+
+# validate directories
+if [ ! -d /workspaces/webvalidate ]; then echo "/workspaces/webvalidate directory not found. Please clone the webvalidate repo to /workspaces"; exit 1; fi
+if [ ! -d deploy ]; then echo "$REPO_BASE/deploy directory not found. Please cd to an appropriate directory"; exit 1; fi
+if [ ! -d deploy/apps/webv ]; then echo "$REPO_BASE/deploy/apps/webv directory not found. Please cd to an appropriate directory"; exit 1; fi
+
+# delete local deployment
+kubectl delete -f deploy/apps/webv --ignore-not-found=true --wait=false
+kic cluster jumpbox &
+
+# build and push the local docker image
+docker build /workspaces/webvalidate -t k3d-registry.localhost:5500/webv:local
+docker push k3d-registry.localhost:5500/webv:local
+
+# create deployment from webv-local
+kubectl wait pod -l app=webv -n imdb --for delete --timeout=30s
+kubectl apply -f deploy/apps/webv
+kubectl wait pod -l app=webv -n imdb --for condition=ready --timeout=30s
+
+# show pods and curl results
+kubectl get pods -n imdb
+kic check webv
