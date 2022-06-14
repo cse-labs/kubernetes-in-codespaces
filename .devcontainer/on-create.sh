@@ -20,7 +20,7 @@ mkdir -p "$HOME/.ssh"
 
 {
     # add cli to path
-    echo "export PATH=\$PATH:\$REPO_BASE/cli"
+    echo "export PATH=\$PATH:$REPO_BASE/cli"
 
     echo "export REPO_BASE=$REPO_BASE"
     echo "compinit"
