@@ -36,13 +36,13 @@ docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 docker pull mcr.microsoft.com/dotnet/sdk:6.0
 docker pull ghcr.io/cse-labs/webv-red:latest
 
-echo "dowloading kic CLI"
-cd cli || exit
-tag="0.4.3"
-wget -O kic.tar.gz "https://github.com/retaildevcrews/akdc/releases/download/$tag/kic-$tag-linux-amd64.tar.gz"
-tar -xvzf kic.tar.gz
-rm kic.tar.gz
-cd $OLDPWD || exit
+# echo "dowloading kic CLI"
+# cd cli || exit
+# tag="0.4.3"
+# wget -O kic.tar.gz "https://github.com/retaildevcrews/akdc/releases/download/$tag/kic-$tag-linux-amd64.tar.gz"
+# tar -xvzf kic.tar.gz
+# rm kic.tar.gz
+# cd "$OLDPWD" || exit
 
 echo "generating kic completion"
 kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
