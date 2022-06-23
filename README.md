@@ -251,6 +251,8 @@ A `jump box` pod is created so that you can execute commands `in the cluster`
 > Fluent Bit is set to forward logs to stdout for debugging
 >
 > Fluent Bit can be configured to forward to different services including Grafana Cloud or Azure Log Analytics
+>
+> Fluent Bit is also installed in the Codespace to simplify debugging new configurations. Run `fluent-bit --help` for more details.
 
 - Start `k9s` from the Codespace terminal (if it's not running from previous step)
 - Press `0` to show all `namespaces`

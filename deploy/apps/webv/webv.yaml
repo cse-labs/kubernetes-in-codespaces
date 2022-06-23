@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webv
+  namespace: imdb
+  labels:
+    app.kubernetes.io/name: webv
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxSurge: 1
+       maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: webv
+  template:
+    metadata:
+      labels:
+        app: webv
+    spec:
+      containers:
+        - name: app
+          image: k3d-registry.localhost:5500/webv:local
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            failureThreshold: 10
+            periodSeconds: 60
+
+          startupProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            failureThreshold: 60
+            periodSeconds: 2
+
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+
+          args:
+          - --sleep
+          - "100"
+          - --prometheus
+          - --run-loop
+          - --verbose
+          - --log-format
+          - Json
+          - --server
+          - http://imdb:8080
+          - --files
+          - benchmark.json
+          - --zone
+          - dev
+          - --region
+          - dev
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webv
+  namespace: imdb
+  labels:
+    app: webv
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: webv

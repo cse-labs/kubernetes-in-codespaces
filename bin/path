@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# show friendly path
-echo "$PATH" | sed "s/:/\n/g" | sort

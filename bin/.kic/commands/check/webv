@@ -1,9 +1,0 @@
-#!/bin/bash
-
-#name: webv
-#short: Check WebV status on the local cluster
-
-# change to this directory
-#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
-
-kubectl exec -it jumpbox -- http webv.imdb.svc.cluster.local:8080/version
