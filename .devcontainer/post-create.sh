@@ -11,3 +11,6 @@ git -C /workspaces/webvalidate pull
 
 echo "post-create complete"
 echo "$(date +'%Y-%m-%d %H:%M:%S')    post-create complete" >> "$HOME/status"
+
+# install E4K componentns as part of Codespace creation
+helm install e4k oci://edgecharts.azurecr.io/helm/az-e4k
