@@ -81,7 +81,7 @@ Cory Wilkerson, Senior Director of Engineering at GitHub, recorded a podcast whe
   kube-system   local-path-provisioner-5ff76fc89d-wfpjx   1/1     Running             0          48s
   kube-system   coredns-7448499f4d-dnjzl                  1/1     Running             0          48s
   kube-system   metrics-server-86cbb8457f-qlp8v           1/1     Running             0          48s
-  logging       fluentbit-f6c6d757b-mjh7r                 1/1     Running             0          32s
+  logging       fluentbit-cq45s                           1/1     Running             0          32s
   kube-system   helm-install-traefik-crd-zk5gr            0/1     Completed           0          48s
   kube-system   helm-install-traefik-mbr2l                0/1     Completed           1          48s
   heartbeat     heartbeat-65978f8f88-dw9fn                1/1     Running             0          32s

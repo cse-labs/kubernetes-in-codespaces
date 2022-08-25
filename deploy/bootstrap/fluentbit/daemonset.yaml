@@ -27,7 +27,9 @@ spec:
           image: fluent/fluent-bit:1.9
           imagePullPolicy: Always
           ports:
-            - containerPort: 2020
+            - name: http
+              containerPort: 2020
+              protocol: TCP
           resources:
             limits:
               cpu: 200m
