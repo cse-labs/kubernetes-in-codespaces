@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: fluentbit
   namespace: logging
@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/name: fluentbit
 
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: fluentbit
@@ -28,11 +27,21 @@ spec:
           image: fluent/fluent-bit:1.9
           imagePullPolicy: Always
           ports:
-            - containerPort: 2020
+            - name: http
+              containerPort: 2020
+              protocol: TCP
           resources:
             limits:
               cpu: 200m
               memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
           env:
           # - name: WorkspaceId
           #   valueFrom:
