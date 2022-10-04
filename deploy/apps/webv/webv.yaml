@@ -57,7 +57,6 @@ spec:
           args:
           - --sleep
           - "100"
-          - --prometheus
           - --run-loop
           - --verbose
           - --log-format

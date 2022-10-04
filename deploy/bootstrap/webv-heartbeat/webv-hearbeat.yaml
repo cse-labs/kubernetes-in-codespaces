@@ -52,7 +52,6 @@ spec:
           args:
           - --sleep
           - "5000"
-          - --prometheus
           - --run-loop
           - --verbose
           - --server
