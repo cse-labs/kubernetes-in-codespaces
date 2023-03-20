@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/cse-labs/webv-red:latest
+          image: ghcr.io/cse-labs/pib-webv:latest
           imagePullPolicy: Always
           ports:
             - name: http
@@ -57,7 +57,7 @@ spec:
           - --server
           - http://heartbeat:8080
           - --files
-          - heartbeat-benchmark.json
+          - heartbeat-load.json
           - --zone
           - dev
           - --region
