@@ -44,8 +44,9 @@ docker pull ghcr.io/cse-labs/webv-red:latest
 # rm kic.tar.gz
 # cd "$OLDPWD" || exit
 
-echo "generating kic completion"
+echo "generating completions"
 kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
+kubectl completion zsh > "$HOME/.oh-my-zsh/completions/_kubectl"
 
 echo "creating k3d cluster"
 kic cluster rebuild
